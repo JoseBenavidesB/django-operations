@@ -1,0 +1,24 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Empresas</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Empresa</th>
+                <th>Prefijo</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.name}}</td>
+                    <td>{{element.prefix}}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+            
+
+{% endblock table %}

@@ -1,0 +1,38 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Replanteos</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Solicitud</th>
+                <th>Información Armada</th>
+                <th>Plano Alineado</th>
+                <th>Replanteo de Puntos en Sitio</th>
+                <th>Fotos Descargadas</th>
+                <th>Laminas Terminadas</th>
+                <th>Redacción de Documento</th>
+                <th>Revisión</th>
+                <th>Reporte enviado el:</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.request}}</td>
+                    <td>{{element.armedInformation}}</td>
+                    <td>{{element.alignedPlan}}</td>
+                    <td>{{element.replantingPoints}}</td>
+                    <td>{{element.downloadedPhotos}}</td>
+                    <td>{{element.sketch}}</td>
+                    <td>{{element.drafting}}</td>
+                    <td>{{element.review}}</td>
+                    <td>{{element.submittedReport}}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+            
+
+{% endblock table %}

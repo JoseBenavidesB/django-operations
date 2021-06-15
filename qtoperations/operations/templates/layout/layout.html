@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href= "{% static 'lib/bootstrap-4.6.0/css/bootstrap.min.css' %}">
+
+        <script src= " {% static 'lib/bootstrap-4.6.0/js/jquery-3.6.0.min.js'%}"></script>
+        <script src= " {% static 'lib/bootstrap-4.6.0/js/bootstrap.bundle.min.js'%}"></script>
+        <script src= " {% static 'lib/bootstrap-4.6.0/js/popper.min.js'%}"></script>
+        
+        <title>{{ title }}</title>
+        {% block header %}{% endblock header %}
+    </head>
+    <body class="container">
+        <nav>
+            <ul class="nav nav-tabs justify-content-center">
+                
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'services' %}">Servicios</a>
+                </li>
+                  <a class="nav-link " href="{% url 'solicitud' %}">Solicitudes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reports'%}">Informes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'levels' %}">Curvas de Nivel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cadastral' %}">Catastros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'replant'%}">Replanteos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
+                </li>
+            </ul> 
+        </nav>
+
+        {% block content %}
+            aqui
+        
+        {% endblock %}
+
+        <footer class="container">
+            <p class="text-center">Quiros Topografía S.A.| Designed by Jose Benavides</p>
+        </footer>
+    </body>
+        
+</html>

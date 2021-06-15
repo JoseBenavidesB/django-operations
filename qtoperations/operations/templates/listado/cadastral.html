@@ -1,0 +1,28 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Clientes</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Servicio</th>
+                <th>Dibujo</th>
+                <th>Revisión</th>
+                <th>Subido APT</th>
+                <th>Plano Catastrado el:</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.request}}</td>
+                    <td>{{element.draw}}</td>
+                    <td>{{element.review}}</td>
+                    <td>{{element.uploadedAPT}}</td>
+                    <td>{{element.advertisedPlano}}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}

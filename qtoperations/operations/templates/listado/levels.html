@@ -1,0 +1,30 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Curvas</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Solicitud</th>
+                <th>Dibujo</th>
+                <th>Laminas (salida)</th>
+                <th>Revisión</th>
+                <th>Curvas envidas el:</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.request}}</td>
+                    <td>{{element.draw}}</td>
+                    <td>{{element.sketch}}</td>
+                    <td>{{element.review}}</td>
+                    <td>{{element.submittedCurves}}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+            
+
+{% endblock table %}

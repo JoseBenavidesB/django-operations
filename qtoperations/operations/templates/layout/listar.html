@@ -1,0 +1,80 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+
+{% block header %}
+    {% comment "datatable" %}DATATABLE{% endcomment %}
+    <link rel="stylesheet" href="{% static 'lib/DataTables/Bootstrap/css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/DataTables/DataTables/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/DataTables/Responsive/css/responsive.bootstrap4.min.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'lib/DataTables/jquery.dataTables.min.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'lib/DataTables/Buttons/css/buttons.dataTables.min.css' %}"/>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/jQuery/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/DataTables/DataTables/js/jquery.dataTables.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/Buttons/js/dataTables.buttons.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/jszip.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/pdfmake.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/vfs_fonts.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/Buttons/js/buttons.html5.min.jss' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/Buttons/js/buttons.print.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/DataTables/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/DataTables/Responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/DataTables/Responsive/js/responsive.bootstrap4.min.js' %}"></script>
+{% endblock header %}
+
+{% block content %}
+    
+    {% block table %}
+
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Fecha Tentativa</th>
+                    <th>Servicio</th>
+                    <th>Fecha Propuesta</th>
+                    <th>Fecha de medición</th>
+                    <th>Fecha de Conclusión</th>
+                    <th>Fecha Descarga Datos</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <tr>
+                        <td>prueb</td>
+                        <td>prueb</td>
+                        <td>prueb</td>
+                        <td>prueb</td>
+                        <td>prueb</td>
+                        <td>prueb</td>
+                    </tr>
+
+                
+            </tbody>
+        </table>
+
+    {% endblock table %}
+
+
+
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable({
+                responsive: true,
+                autoWidth: false,
+                "language": {
+                    url: '{% static "lib/DataTables/DataTables/idioma.txt" %}' 
+                } 
+            });
+        } );
+    </script>
+
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -22,6 +22,13 @@ class EmpresasCreateView(CreateView):
 class EmpresasListView(ListView):
     model= Empresas
     template_name= 'listado/empresas.html'
+
+#actualizar Empresas
+class EmpresaUpdateView(UpdateView):
+    model= Empresas
+    form_class=  EmpresaForm#aqui va el formulario
+    template_name= 'formularios/create-companies.html'#aqui donde se va crear el registr
+    success_url= reverse_lazy('empresas')#donde se va redigir el contenido
 
 
 #crear clientes

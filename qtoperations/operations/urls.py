@@ -23,4 +23,6 @@ urlpatterns = [
     path('create-cadastral/', views.CadastralCreateView.as_view(), name='create-cadastral'),
     path('replant/', views.ReplantListView.as_view(), name='replant'),
     path('create-replant/', views.ReplantCreateView.as_view(), name='create-replant'),
+    path('editcompany/<int:pk>', views.EmpresaUpdateView.as_view(), name='edit-company'),
+
 ]

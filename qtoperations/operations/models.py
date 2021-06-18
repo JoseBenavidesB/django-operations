@@ -71,7 +71,7 @@ class FieldSurvey(models.Model):
     request= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     tentativeDate = models.DateField(blank=True, null=True, verbose_name='Fecha Tentativa')
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta')
-    fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Levantamiento Campo')
+    fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo')
     conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión')
     downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos')
 
@@ -86,11 +86,11 @@ class FieldSurvey(models.Model):
 #informes
 class Reports(models.Model):
     request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
-    armedInformation = models.DateField(blank=True, null=True, verbose_name='Información Armada')
+    armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
     alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
     sketch = models.DateField(blank=True, null=True, verbose_name='Dibujo de Croquis')
-    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Documento')
+    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     finalReview = models.DateField(blank=True, null=True, verbose_name='Revisón Final')
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte enviado el:')
@@ -152,12 +152,12 @@ class Corrections(models.Model):
 #replanteo
 class Replant(models.Model):
     request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
-    armedInformation = models.DateField(blank=True, null=True, verbose_name='Información Armada')
+    armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
     alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado') 
-    replantingPoints = models.DateField(blank=True, null=True, verbose_name='Replanteo de Puntos en sitio')
+    replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
     sketch = models.DateField(blank=True, null=True, verbose_name='Laminas Terminadas')
-    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Documento')
+    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:')
 

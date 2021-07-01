@@ -4,6 +4,7 @@
 {% comment "Bloque que contiene el formulario" %}Contiene formulario{% endcomment %}
 {% block content %}
 <form method="post">
+    <h1 class='text-center'>{{title}}</h1>
     {% csrf_token %}
 
     {% for field in form.visible_fields %}
@@ -21,7 +22,10 @@
         </div>
     {% endfor %}
 
-    <button type='submit' class='btn btn-primary'> Crear Registro</button>
+    
+
+    <button type='submit' class='btn btn-primary'> {{buttom}}</button>
+    {{date}}
 </form>
 
 {% comment "" %}to add extra{% endcomment %}

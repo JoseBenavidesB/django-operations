@@ -22,7 +22,7 @@
                     <td>{{element.sketch}}</td>
                     <td>{{element.review}}</td>
                     <td>{{element.submittedCurves}}</td>
-                    <td><a href="#"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
+                    <td><a href="{% url 'edit-level' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 </tr>
                 {% endfor %}
         </tbody>

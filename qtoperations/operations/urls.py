@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='inicio'),
     path('empresas/', views.EmpresasListView.as_view(), name='empresas'),
-    path('crear-empresa/', views.EmpresasCreateView.as_view(), name='crear-empresa'),
+    path('create-company/', views.EmpresasCreateView.as_view(), name='crear-empresa'),
     path('customers/', views.CustomerListView.as_view(), name='customers'),
     path('create-customer/', views.CustomerCreateView.as_view(), name='create-customer'),
     path('services/', views.ServicesListView.as_view(), name='services'),
@@ -24,5 +24,14 @@ urlpatterns = [
     path('replant/', views.ReplantListView.as_view(), name='replant'),
     path('create-replant/', views.ReplantCreateView.as_view(), name='create-replant'),
     path('editcompany/<int:pk>', views.EmpresaUpdateView.as_view(), name='edit-company'),
+    path('editcustomer/<int:pk>', views.CustomerUpdateView.as_view(), name='edit-customer'),
+    path('editservices/<int:pk>', views.ServicesUpdateView.as_view(), name='edit-service'),
+    path('editrequest/<int:pk>', views.SolicitudUpdateView.as_view(), name='edit-request'),
+    path('editsurvey/<int:pk>', views.SurveyUpdateView.as_view(), name='edit-survey'),
+    path('editreport/<int:pk>', views.ReportUpadateView.as_view(), name='edit-report'),
+    path('editlevel/<int:pk>', views.LevelUpdateView.as_view(), name='edit-level'),
+    path('editcadastral/<int:pk>', views.CadastralUpdateView.as_view(), name='edit-cadastral'),
+    path('editreplant/<int:pk>', views.ReplantUpdateView.as_view(), name='edit-replant'),
+
 
 ]

@@ -48,7 +48,14 @@
         </nav>
 
         {% block content %}
-            aqui
+            {% if request.user.is_authenticated %}
+                Bienvenido {{user.username}}
+
+
+                {% else %}
+                    Bienvenido, por favor inicia sesión.
+            {% endif %}
+            {% comment "inser" %}insertar logo de quiros topografía como una tarjeta si no ha iniciado sesión{% endcomment %}
         
         {% endblock %}
 

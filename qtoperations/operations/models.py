@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 #empresas
@@ -100,7 +101,7 @@ class Reports(models.Model):
         verbose_name_plural='Informes'
 
     def __str__(self):
-        return self.request
+        return f'Informe||{self.request}'
 
 
 #curvas de nivel
@@ -160,6 +161,10 @@ class Replant(models.Model):
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:')
+
+    class Meta:
+        verbose_name = 'Replanteo'
+        verbose_name_plural = 'Replanteos'
 
 '''nota, puedo poner lev de campo y que este le lleve a la solicitud, 
 que el informe me lleve al estado del lev de campo

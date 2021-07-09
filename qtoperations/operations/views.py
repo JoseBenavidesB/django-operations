@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -13,6 +16,7 @@ def index(request):
     return render(request, 'layout/layout.html', {'context':contexto, 'title': titulo})
 
 #crear Empresas
+
 class EmpresasCreateView(CreateView):
     model= Empresas
     form_class=  EmpresaForm#aqui va el formulario
@@ -28,6 +32,7 @@ class EmpresasCreateView(CreateView):
 
 
 #listar las empresas
+
 class EmpresasListView(ListView):
     model= Empresas
     template_name= 'listado/empresas.html'
@@ -45,6 +50,11 @@ class EmpresaUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #crear clientes
 class CustomerCreateView(CreateView):
@@ -59,10 +69,20 @@ class CustomerCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 #listar clientes
 class CustomerListView(ListView):
     model= Customers
     template_name = 'listado/customer.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #actualizar Clientes
 class CustomerUpdateView(UpdateView):
@@ -76,6 +96,11 @@ class CustomerUpdateView(UpdateView):
         context["title"] = 'Actualizar Registro de Cliente'
         context['buttom'] = 'Actualizar Registro'
         return context
+    
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 #crear Servicios
@@ -110,6 +135,10 @@ class ServicesUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
+        "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 #Crear solicitudes
 class SolicitudCreateView(CreateView):
     model=Solicitudes
@@ -121,25 +150,35 @@ class SolicitudCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Nuevo Registro de Solicitud'
         context['buttom'] = 'Crear Registro'
-        context['date'] = datetime.date
+        context['date'] = datetime.date.today()
         return context
+
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #listar solicitudes
 class SolicitudListView(ListView):
     model = Solicitudes
     template_name = 'listado/solicitudes.html'
 
+    "to keep secure the view"
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 #actualizar Solicitud
 class SolicitudUpdateView(UpdateView):
     model= Solicitudes
     form_class= SolicitudForm
-    template_name= 'formularios/create-request'
-    success_url = 'solicitud'
+    template_name= 'formularios/create-request.html'
+    success_url = reverse_lazy('solicitud')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Actualizar Registro de Solicitud'
-        context["title"] = 'Actualizar Registro'
+        context["buttom"] = 'Actualizar Registro'
         return context
     
 
@@ -307,3 +346,25 @@ class ReplantUpdateView(UpdateView):
         return context    
 
 
+class LoginFormView(LoginView):
+    template_name= 'formularios/login.html'
+
+
+    "make a comprobation to know if user is authenticated or not"
+    def dispatch(self, request, *args,**kwargs): 
+        if request.user.is_authenticated:
+            return redirect('solicitud')
+
+        return super().dispatch(request, *args, **kwargs)
+    """LOGIN_REDIRECT_URL is neccesary to redirect after login, this variable in settings"""
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Inicio de Sesión'
+        context['buttom'] = 'Iniciar Sesión'
+        return context   
+
+
+class LogoutFormView(LogoutView):
+    next_page= 'inicio'

@@ -32,6 +32,9 @@ urlpatterns = [
     path('editlevel/<int:pk>', views.LevelUpdateView.as_view(), name='edit-level'),
     path('editcadastral/<int:pk>', views.CadastralUpdateView.as_view(), name='edit-cadastral'),
     path('editreplant/<int:pk>', views.ReplantUpdateView.as_view(), name='edit-replant'),
+    path('login/', views.LoginFormView.as_view(), name='login'),
+    path('logout/', views.LogoutFormView.as_view(), name='logout'),
+
 
 
 ]

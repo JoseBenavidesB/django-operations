@@ -15,46 +15,45 @@
         {% block header %}{% endblock header %}
     </head>
     <body class="container">
-        <nav>
-            <ul class="nav nav-tabs justify-content-center">
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'services' %}">Servicios</a>
-                </li>
-                  <a class="nav-link " href="{% url 'solicitud' %}">Solicitudes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'reports'%}">Informes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'levels' %}">Curvas de Nivel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cadastral' %}">Catastros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'replant'%}">Replanteos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
-                </li>
-            </ul> 
-        </nav>
+        {% if request.user.is_authenticated %}
+            <nav>
+                <ul class="nav nav-tabs justify-content-center">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
+                    </li>
+                    <a class="nav-link " href="{% url 'solicitud' %}">Solicitudes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'reports'%}">Informes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'levels' %}">Curvas de Nivel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cadastral' %}">Catastros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'replant'%}">Replanteos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    </li>
+                </ul> 
+            </nav>
+            {% else %}
+                    <p>Bienvenido, por favor inicia sesión</p>
+                    <a href="{% url 'login' %}">Iniciar Sesión</a>
+        {% endif %}
+
 
         {% block content %}
-            {% if request.user.is_authenticated %}
-                Bienvenido {{user.username}}
-
-
-                {% else %}
-                    Bienvenido, por favor inicia sesión.
-            {% endif %}
             {% comment "inser" %}insertar logo de quiros topografía como una tarjeta si no ha iniciado sesión{% endcomment %}
         
         {% endblock %}

@@ -3,6 +3,7 @@ from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -29,13 +30,21 @@ class EmpresasCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
     
-
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #listar las empresas
 
 class EmpresasListView(ListView):
     model= Empresas
     template_name= 'listado/empresas.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #actualizar Empresas
 class EmpresaUpdateView(UpdateView):
@@ -44,6 +53,7 @@ class EmpresaUpdateView(UpdateView):
     template_name= 'formularios/create-companies.html'#aqui donde se va crear el registr
     success_url= reverse_lazy('empresas')#donde se va redigir el contenido
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Actualizar Registro de Cliente'
@@ -51,11 +61,11 @@ class EmpresaUpdateView(UpdateView):
         return context
 
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-
+    
 #crear clientes
 class CustomerCreateView(CreateView):
     model= Customers
@@ -70,7 +80,7 @@ class CustomerCreateView(CreateView):
         return context
 
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -80,9 +90,10 @@ class CustomerListView(ListView):
     template_name = 'listado/customer.html'
 
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
 
 #actualizar Clientes
 class CustomerUpdateView(UpdateView):
@@ -98,7 +109,7 @@ class CustomerUpdateView(UpdateView):
         return context
     
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -116,10 +127,20 @@ class ServicesCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 #listar servicios
 class ServicesListView(ListView):
     model=Services
     template_name= 'listado/services.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 #actualizar Servicios
@@ -135,8 +156,8 @@ class ServicesUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
-        "to keep secure the view"
-    @method_decorator(login_required)
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 #Crear solicitudes
@@ -154,7 +175,7 @@ class SolicitudCreateView(CreateView):
         return context
 
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -164,7 +185,7 @@ class SolicitudListView(ListView):
     template_name = 'listado/solicitudes.html'
 
     "to keep secure the view"
-    @method_decorator(login_required)
+    @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -180,6 +201,12 @@ class SolicitudUpdateView(UpdateView):
         context["title"] = 'Actualizar Registro de Solicitud'
         context["buttom"] = 'Actualizar Registro'
         return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     
 
 #crear Levantamientos de campo
@@ -195,11 +222,22 @@ class SurveyCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #listar Levantamiento de Campo
 class SurveyListView(ListView):
     model = FieldSurvey
     template_name = 'listado/surveys.html'
+
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #actualizar levantamiento
 class SurveyUpdateView(UpdateView):
@@ -214,6 +252,12 @@ class SurveyUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 #Crear Informes
 class ReportCreateView(CreateView):
     model = Reports
@@ -227,11 +271,23 @@ class ReportCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 #Listar Informes
 
 class ReportListView(ListView):
     model = Reports
     template_name = 'listado/reports.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #Actualizar Informes
 class ReportUpadateView(UpdateView):
@@ -245,6 +301,12 @@ class ReportUpadateView(UpdateView):
         context["title"] = 'Actualizar Registro de Informe'
         context['buttom'] = 'Actualizar Registro'
         return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 #crear Curvas De Nivel
@@ -260,10 +322,22 @@ class LevelCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 #Listar Curvas de Nivel
 class LevelListView(ListView):
     model = levelCurves
     template_name = 'listado/levels.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #Actualizar Curvas
 class LevelUpdateView(UpdateView):
@@ -277,6 +351,12 @@ class LevelUpdateView(UpdateView):
         context["title"] = 'Actualizar Registro de Curvas'
         context['buttom'] = 'Actualizar Registro'
         return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 #crear Catastros
@@ -292,10 +372,22 @@ class CadastralCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 #listar Catastros
 class CadastralListView(ListView):
     model = CadastralPlans
     template_name = 'listado/cadastral.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #Actualizar Catastros
 class CadastralUpdateView(UpdateView):
@@ -309,6 +401,12 @@ class CadastralUpdateView(UpdateView):
         context["title"] = 'Actualizar Registro de Catastro'
         context['buttom'] = 'Actualizar Registro'
         return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #crear Correciones
 
@@ -327,6 +425,12 @@ class ReplantCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 #listar replanteos
 class ReplantListView(ListView):
     model = Replant
@@ -343,7 +447,13 @@ class ReplantUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Actualizar Registro de Replanteo'
         context['buttom'] = 'Actualizar Registro'
-        return context    
+        return context  
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+  
 
 
 class LoginFormView(LoginView):

@@ -145,3 +145,8 @@ TEMPLATE_DIRS = (
 
 #for redirect after login
 LOGIN_REDIRECT_URL = 'solicitud'
+
+
+#FOR IMAGES
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

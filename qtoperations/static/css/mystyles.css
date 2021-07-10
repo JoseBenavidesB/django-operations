@@ -1,0 +1,25 @@
+.barra {
+    background-color: rgb(183, 189, 96);
+    border-radius: 0.5rem;
+}
+
+ul.nav li a{
+    color: black !important;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+    color: white !important;
+}
+
+ul.nav li.active a {
+    color: black !important;
+}
+
+.bienvenido {
+    text-align: center;
+    margin-top: 10rem;
+    background-color: rgb(183, 189, 96);
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 1rem;
+}

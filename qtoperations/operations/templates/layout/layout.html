@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href= "{% static 'lib/bootstrap-4.6.0/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mystyles.css'%}">
 
         <script src= " {% static 'lib/bootstrap-4.6.0/js/jquery-3.6.0.min.js'%}"></script>
         <script src= " {% static 'lib/bootstrap-4.6.0/js/bootstrap.bundle.min.js'%}"></script>
@@ -16,8 +17,8 @@
     </head>
     <body class="container">
         {% if request.user.is_authenticated %}
-            <nav>
-                <ul class="nav nav-tabs justify-content-center">
+            <nav class="barra">
+                <ul class="nav nav-tabs justify-content-center ">
                     
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
@@ -25,6 +26,7 @@
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
                     </li>
+                    <li class="nav-item">
                     <a class="nav-link " href="{% url 'solicitud' %}">Solicitudes</a>
                     </li>
                     <li class="nav-item">
@@ -48,8 +50,8 @@
                 </ul> 
             </nav>
             {% else %}
-                    <p>Bienvenido, por favor inicia sesión</p>
-                    <a href="{% url 'login' %}">Iniciar Sesión</a>
+                    <p class="bienvenido">Bienvenido, por favor <a href="{% url 'login' %}">inicia sesión</a></p>
+                    
         {% endif %}
 
 

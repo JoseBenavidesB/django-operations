@@ -1,1 +1,19 @@
 {% extends 'layout/crear.html' %}
+{% load widget_tweaks%}
+
+{% block content %}
+<form action="." method="post">
+    <h1 class='text-center'>{{title}}</h1>
+    {% csrf_token %}
+    {% for field in form%}
+        <label>{{ field.label }}</label>
+
+        {{ field|append_attr:"class:form-label input-form form-control"|attr:"autocomplete:off" }}
+    {% endfor %}
+
+    <button type='submit' class='btn btn-primary'> {{buttom}}</button>
+
+</form>
+
+
+{% endblock content %}

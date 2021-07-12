@@ -56,6 +56,7 @@ class Solicitudes(models.Model):
     name = models.CharField(max_length=150, verbose_name='Solicitudes', null=False, blank=False)
     customer = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
     service = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
+    contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
     deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega')
     plan = models.ImageField(default='null', verbose_name='Plano', upload_to='planos')
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")

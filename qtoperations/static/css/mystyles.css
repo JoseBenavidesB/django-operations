@@ -1,6 +1,26 @@
+body::after { /*to set a image background with opacity */
+    content: "";
+    background: url("/static/img/logoqt.jpg");
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-position:center;   
+  }
+
+
 .barra {
-    background-color: rgb(183, 189, 96);
+    background-color: #998100;
     border-radius: 0.5rem;
+    padding-top: 0;
+    padding-bottom: 0.2rem;
+    margin-bottom: 1rem;
+    
 }
 
 ul.nav li a{
@@ -8,7 +28,8 @@ ul.nav li a{
 }
 
 ul.nav li a:hover, ul.nav li a:active {
-    color: white !important;
+    color: rgb(185, 183, 42) !important;
+    
 }
 
 ul.nav li.active a {
@@ -23,3 +44,5 @@ ul.nav li.active a {
     padding: 1rem;
     border-radius: 1rem;
 }
+
+ul.nav a:hover { color: red !important; }

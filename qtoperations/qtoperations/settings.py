@@ -35,6 +35,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #for django admin panel
+    'admin_interface',
+    'colorfield',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,3 +154,7 @@ LOGIN_REDIRECT_URL = 'solicitud'
 #FOR IMAGES
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+#for DJANGO ADMIN PANEL
+X_FRAME_OPTIONS= 'SAMEORIGIN'

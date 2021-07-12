@@ -15,54 +15,60 @@
         <title>{{ title }}</title>
         {% block header %}{% endblock header %}
     </head>
-    <body class="container">
-        {% if request.user.is_authenticated %}
-            <nav class="barra">
-                <ul class="nav nav-tabs justify-content-center ">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link " href="{% url 'solicitud' %}">Solicitudes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'reports'%}">Informes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'levels' %}">Curvas de Nivel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cadastral' %}">Catastros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'replant'%}">Replanteos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
-                    </li>
-                </ul> 
-            </nav>
-            {% else %}
-                    <p class="bienvenido">Bienvenido, por favor <a href="{% url 'login' %}">inicia sesión</a></p>
-                    
-        {% endif %}
+    <body>
+        <div class="container">
+            <div class="background">
+                {% if request.user.is_authenticated %}
+                    <nav class="barra">
+                        <ul class="nav nav-tabs justify-content-center ">
+                            
+                            <li class="nav-item">
+                                <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Solicitudes
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'solicitud' %}">En General</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'reports'%}">Informes</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'levels' %}">Curvas de Nivel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href=" {% url 'replant' %}">Replanteos</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'cadastral' %}">Catastros</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                            </li>
+                            
+                        </ul> 
+                    </nav>
+                    {% else %}
+                            <p class="bienvenido">Bienvenido, por favor <a href="{% url 'login' %}">inicia sesión</a></p>
+                            
+                {% endif %}
 
 
-        {% block content %}
-            {% comment "inser" %}insertar logo de quiros topografía como una tarjeta si no ha iniciado sesión{% endcomment %}
-        
-        {% endblock %}
+                {% block content %}
+                    {% comment "inser" %}insertar logo de quiros topografía como una tarjeta si no ha iniciado sesión{% endcomment %}
+                
+                {% endblock %}
 
-        <footer class="container">
-            <p class="text-center">Quiros Topografía S.A.| Designed by Jose Benavides</p>
-        </footer>
+                <footer class="container bottom">
+                    <p class="text-center ">Quiros Topografía S.A.| Designed by Jose Benavides</p>
+                </footer>
+            </div>
+        </div>
     </body>
         
 </html>

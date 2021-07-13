@@ -121,7 +121,7 @@ class levelCurves(models.Model):
         return f'Curvas de Nivel||{self.request}'
 
 
-#catastro
+#catastro 
 class CadastralPlans(models.Model):
     request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     draw = models.DateField(blank=True, null=True, verbose_name='Fecha Dibujo')
@@ -151,7 +151,7 @@ class Corrections(models.Model):
     def __str__(self):
         return f'Correciones||{self.request}'    
 
-#replanteo
+#replanteo 
 class Replant(models.Model):
     request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')

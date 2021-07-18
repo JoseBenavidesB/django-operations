@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'operations',
     #for widget class html
-    'widget_tweaks'
+    'widget_tweaks',
+
+    #for bootstrap forms
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -158,3 +161,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 #for DJANGO ADMIN PANEL
 X_FRAME_OPTIONS= 'SAMEORIGIN'
+
+#for bootstrap form
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

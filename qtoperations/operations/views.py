@@ -478,3 +478,7 @@ class LoginFormView(LoginView):
 
 class LogoutFormView(LogoutView):
     next_page= 'inicio'
+
+
+#puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
+#se debe filtrar id.informe = id.

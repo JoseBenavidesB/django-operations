@@ -1,5 +1,6 @@
 {% extends 'layout/layout.html' %}
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 {% comment "Bloque que contiene el formulario" %}Contiene formulario{% endcomment %}
 {% block content %}
@@ -7,20 +8,7 @@
     <h1 class='text-center'>{{title}}</h1>
     {% csrf_token %}
 
-    {% for field in form.visible_fields %}
-        <div class="form-group">
-            <label> {{field.label}} </label>
-            {% if field|field_type == 'datefield' %}
-                    {{field|attr:"type:date"|append_attr:"class:form-label input-form form-control"}}
-                    
-                    {% elif field|field_type == 'emailfield'%}
-                        {{field|attr:"type:email"|append_attr:"class:form-label input-form form-control"}}
-
-                    {% else %}
-                        {{field|attr:"type:text"|append_attr:"class:form-control"}}      
-            {% endif %} 
-        </div>
-    {% endfor %}
+    {{ form|crispy }}
 
     
 
@@ -36,3 +24,5 @@
 {% endblock contentForm %}
 
 {% endblock content %}
+
+

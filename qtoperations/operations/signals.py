@@ -3,19 +3,18 @@ from django.dispatch import receiver
 from operations.models import Solicitudes, FieldSurvey, Reports, levelCurves, CadastralPlans, Replant
 
 
-@receiver(post_save, sender=Solicitudes) #there is two ways to use signals, the most easy is use decorator
+@receiver(post_save, sender=Solicitudes) #there are two ways to use signals, the most easy is use decorator
 def post_save_create_fieldsurvey(sender, instance, created, **kwargs):
     if created:
-        FieldSurvey.objects.create(request=instance)
+        if instance.survey:
+            FieldSurvey.objects.create(solicitud_id = instance)
 
-@receiver(post_save, sender=FieldSurvey)
-def post_save_create_job(sender, instance, created, **kwargs):
-    if created:
-        if(str(instance.request.service) == 'Replanteo'):
-            Replant.objects.create(request=instance)
-        elif(str(instance.request.service) == 'Plano Catastrado'):
-            CadastralPlans.objects.create(request=instance)
-        elif(str(instance.request.service) == 'Curvas de Nivel'):
-            levelCurves.objects.create(request=instance)
-        else:
-            Reports.objects.create(request=instance)
+        if(str(instance.service_id) == 'Replanteo'):
+            Replant.objects.create(solicitud_id=instance)
+        elif(str(instance.service_id) == 'Plano Catastrado'):
+            CadastralPlans.objects.create(solicitud_id=instance)
+        elif(str(instance.service_id) == 'Curvas de Nivel'):
+            levelCurves.objects.create(solicitud_id=instance)
+        elif(str(instance.service_id) == 'Informe'):
+            Reports.objects.create(solicitud_id=instance)
+

@@ -9,7 +9,7 @@
                 <th>Dibujo</th>
                 <th>Laminas (salida)</th>
                 <th>Revisión</th>
-                <th>Curvas envidas el:</th>
+                <th>Enviadas el:</th>
                 <th>Editar</th>
             </tr>
         </thead>
@@ -17,7 +17,7 @@
         <tbody>
                 {% for element in object_list %}
                 <tr>
-                    <td>{{element.request}}</td>
+                    <td>{{element.solicitud_id}}</td>
                     <td>{{element.draw}}</td>
                     <td>{{element.sketch}}</td>
                     <td>{{element.review}}</td>

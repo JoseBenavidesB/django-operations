@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator
+import datetime
 
 # Create your models here.
 
@@ -14,7 +15,7 @@ class Empresas(models.Model):
         verbose_name_plural = 'Empresas'
 
     def __str__(self):
-        return self.prefix #con esto puedo manipular para que se presente SF-0003
+        return (self.prefix) #con esto puedo manipular para que se presente SF-0003
 
 #clientes
 class Customers(models.Model):
@@ -41,7 +42,7 @@ class Services(models.Model):
         verbose_name_plural = 'Servicios'
 
     def __str__(self):
-        return self.typeService
+        return str(self.typeService)
 
 #solicitudes
 class Solicitudes(models.Model):
@@ -54,23 +55,25 @@ class Solicitudes(models.Model):
     ]
 
     name = models.CharField(max_length=150, verbose_name='Solicitudes', null=False, blank=False)
-    customer = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
-    service = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
+    customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
+    service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
     contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
-    deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega')
+    deliveryDate = models.DateField(validators=[MinValueValidator(datetime.date.today)], blank=True, null=True ,verbose_name='Fecha Entrega')
     plan = models.ImageField(default='null', verbose_name='Plano', upload_to='planos')
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
+    survey = models.BooleanField(default=True, verbose_name='Necesita Lev Campo?')
 
     class Meta:
         verbose_name = 'Solicitud'
         verbose_name_plural = 'Solicitudes'
+        #event tiene FK a venueob, 
 
     def __str__(self):
-        return f'{self.id}-{self.name} [{self.customer}]'
+        return f'{self.id}-{self.name} [{self.customer_id}]'
 
 #levantamiento de campo
 class FieldSurvey(models.Model):
-    request= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     tentativeDate = models.DateField(blank=True, null=True, verbose_name='Fecha Tentativa')
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta')
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo')
@@ -82,12 +85,12 @@ class FieldSurvey(models.Model):
         verbose_name_plural='Levantamientos de Campo'
 
     def __str__(self):
-        return str(self.request)
+        return str(self.solicitud_id)
 
 
 #informes
 class Reports(models.Model):
-    request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
     alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
@@ -102,12 +105,12 @@ class Reports(models.Model):
         verbose_name_plural='Informes'
 
     def __str__(self):
-        return f'Informe||{self.request}'
+        return f'Informe||{self.solicitud_id}'
 
 
 #curvas de nivel
 class levelCurves(models.Model):
-    request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     draw = models.DateField(blank=True, null=True, verbose_name='Fecha Dibujo')
     sketch = models.DateField(blank=True, null=True, verbose_name='Laminas Terminadas')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
@@ -118,12 +121,12 @@ class levelCurves(models.Model):
         verbose_name_plural='Curvas de Nivel'
 
     def __str__(self):
-        return f'Curvas de Nivel||{self.request}'
+        return f'Curvas de Nivel||{self.solicitud_id}'
 
 
 #catastro 
 class CadastralPlans(models.Model):
-    request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     draw = models.DateField(blank=True, null=True, verbose_name='Fecha Dibujo')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT')
@@ -134,11 +137,11 @@ class CadastralPlans(models.Model):
         verbose_name_plural = 'Planos Catastrados'
 
     def __str__(self):
-        return f'Plano Catastrado||{self.request}'
+        return f'Plano Catastrado||{self.solicitud_id}'
 
 #correciones catastro
 class Corrections(models.Model):
-    request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    cadastral_id= models.ForeignKey(CadastralPlans, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Catastro')
     downloadedMinute = models.DateField(blank=True, null=True, verbose_name='Minuta Descargada') 
     errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores')
     corrections = models.DateField(blank=True, null=True, verbose_name='Correciones')
@@ -149,11 +152,11 @@ class Corrections(models.Model):
         verbose_name_plural = 'Correciones'
 
     def __str__(self):
-        return f'Correciones||{self.request}'    
+        return f'Correciones||{self.cadastral_id}'    
 
 #replanteo 
 class Replant(models.Model):
-    request = models.ForeignKey(FieldSurvey, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
+    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud')
     armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
     alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado') 
     replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio')
@@ -166,6 +169,9 @@ class Replant(models.Model):
     class Meta:
         verbose_name = 'Replanteo'
         verbose_name_plural = 'Replanteos'
+    
+    def __str__(self):
+        return f'Replanteo||{self.solicitud_id}'
 
 '''nota, puedo poner lev de campo y que este le lleve a la solicitud, 
 que el informe me lleve al estado del lev de campo

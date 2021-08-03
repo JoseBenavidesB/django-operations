@@ -34,6 +34,8 @@ urlpatterns = [
     path('editreplant/<int:pk>', views.ReplantUpdateView.as_view(), name='edit-replant'),
     path('login/', views.LoginFormView.as_view(), name='login'),
     path('logout/', views.LogoutFormView.as_view(), name='logout'),
+    path('<int:pk>', views.ReportDetailView.as_view(), name='detail'),
+    path('<str:servicio>/<int:id>', views.complete_request, name='complete-request')
 
 
 

@@ -1,5 +1,6 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -8,7 +9,6 @@ from .models import *
 from .forms import *
 from django.urls import reverse_lazy
 import datetime
-
 
 # Create your views here.
 def index(request):
@@ -24,13 +24,25 @@ class EmpresasCreateView(CreateView):
     template_name= 'formularios/create-companies.html'#aqui donde se va crear el registr
     success_url= reverse_lazy('empresas')#donde se va redigir el contenido
 
+
+    # #to send the errros at template
+    # def post(self, request, *args, **kwargs) :
+    #     #return super().post(request, *args, **kwargs)
+    #     form = ServicesForm(request.POST)
+    #     if form.is_valid():
+    #         return HttpResponseRedirect(self.success_url)
+    #     self.object = None
+    #     context = self.get_context_data(**kwargs)
+    #     context['form'] = form
+    #     return render(request, self.template_name, context)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Nuevo Registro de Empresa'
         context['buttom'] = 'Crear Registro'
         return context
     
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -41,7 +53,7 @@ class EmpresasListView(ListView):
     model= Empresas
     template_name= 'listado/empresas.html'
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -60,7 +72,7 @@ class EmpresaUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -79,7 +91,7 @@ class CustomerCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -89,7 +101,7 @@ class CustomerListView(ListView):
     model= Customers
     template_name = 'listado/customer.html'
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -108,7 +120,7 @@ class CustomerUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
     
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -120,6 +132,7 @@ class ServicesCreateView(CreateView):
     form_class= ServicesForm
     template_name = 'formularios/create-service.html'
     success_url = reverse_lazy('services')
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -206,6 +219,11 @@ class SolicitudUpdateView(UpdateView):
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+#Detalles
+class ReportDetailView(DetailView):
+    model= Solicitudes
+    template_name='detalles/detail.html'
 
     
 
@@ -306,6 +324,9 @@ class ReportUpadateView(UpdateView):
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+
 
 
 
@@ -479,6 +500,27 @@ class LoginFormView(LoginView):
 class LogoutFormView(LogoutView):
     next_page= 'inicio'
 
+
+# LISTAR Todo lo de una solicitud
+def complete_request(request, servicio, id):
+    campo = Solicitudes.objects.get(id=id).fieldsurvey_set.all()
+    solicitud = Solicitudes.objects.get(id=id)
+    template=''
+    service=''
+    if servicio == 'Informe':
+        service = Solicitudes.objects.get(id=id).solicitudReport.all() 
+        template='detalles/detail-report.html'
+    elif servicio == 'Plano Catastrado':
+        service = Solicitudes.objects.get(id=id).solicitudCadastral.all() 
+        template='detalles/detail-catastro.html'
+    elif servicio == 'Replanteo':
+        service = Solicitudes.objects.get(id=id).solicitudReplant.all() 
+        template='detalles/detail-replant.html'
+    else:
+        service = Solicitudes.objects.get(id=id).solicitudLevel.all() 
+        template='detalles/detail-level.html'  
+        
+    return render(request, template, {'solicitud':solicitud, 'service':service, 'campo': campo})
 
 #puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
 #se debe filtrar id.informe = id.

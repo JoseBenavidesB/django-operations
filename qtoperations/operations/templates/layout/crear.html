@@ -4,24 +4,22 @@
 
 {% comment "Bloque que contiene el formulario" %}Contiene formulario{% endcomment %}
 {% block content %}
+
+
+
 <form method="post">
     <h1 class='text-center'>{{title}}</h1>
-    {% csrf_token %}
+    {% csrf_token %} 
 
     {{ form|crispy }}
 
-    
 
     <button type='submit' class='btn btn-primary'> {{buttom}}</button>
     
 </form>
 
 {% comment "" %}to add extra{% endcomment %}
-{% block contentForm %}
-{{date}}
 
-
-{% endblock contentForm %}
 
 {% endblock content %}
 

@@ -23,18 +23,35 @@
                     <td>{{element.id}}</td>
                     <td>{{element.name}}</td>
                     <td>{{element.customer_id}}</td>
-                    <td>{{element.service_id}}</td>
+                    <td><a href=" {% url 'complete-request' element.service_id element.id %} ">{{element.service_id}}</a></td>
                     <td>{{element.contact}}</td>
                     <td>{{element.deliveryDate}}</td>
                     <td><a href="{{element.plan.url}}" target="_blank"> <img src="{{element.plan.url}}" alt="" style= "max-height:3rem" ></a></td>
                     <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-request' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
-                </tr>
                 {% endfor %}
         </tbody>
     </table>
+    <!--Search bar-->
+    {% comment %} <div class="container">
 
-    
+        <div class="row align-items-center text-center">
+            {% for element in object_list %}
+                <div class="col mt-5 sm-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{element.plan.url}}" class="card-img-top" alt="Plano">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ element.name }}</h5>
+                            <p class="card-text">{{ element.customer_id }}.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+        
+    </div> ctr+k+c
+             {% endcomment %} 
             
 
 {% endblock table %}

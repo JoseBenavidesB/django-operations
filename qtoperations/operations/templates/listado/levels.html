@@ -17,7 +17,7 @@
         <tbody>
                 {% for element in object_list %}
                 <tr>
-                    <td>{{element.solicitud_id}}</td>
+                    <td><a href="{% url 'complete-request' element.solicitud_id.service_id element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
                     <td>{{element.draw}}</td>
                     <td>{{element.sketch}}</td>
                     <td>{{element.review}}</td>

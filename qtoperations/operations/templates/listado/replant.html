@@ -8,6 +8,7 @@
                 <th>Solicitud</th>
                 <th>Info. Armada</th>
                 <th>Plano Alineado</th>
+                <th>Archivos de Replanteo</th>
                 <th>Replanteo en Sitio</th>
                 <th>Fotos Descargadas</th>
                 <th>Laminas Terminadas</th>
@@ -21,9 +22,10 @@
         <tbody>
                 {% for element in object_list %}
                 <tr>
-                    <td>{{element.solicitud_id}}</td>
+                    <td><a href="{% url 'complete-request' element.solicitud_id.service_id element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
                     <td>{{element.armedInformation}}</td>
                     <td>{{element.alignedPlan}}</td>
+                    <td>{{element.files_replant}}</td>
                     <td>{{element.replantingPoints}}</td>
                     <td>{{element.downloadedPhotos}}</td>
                     <td>{{element.sketch}}</td>

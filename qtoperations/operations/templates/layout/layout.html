@@ -33,8 +33,10 @@
                                 Solicitudes
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{% url 'solicitud' %}">En General</a>
+                                    <a class="dropdown-item" href="{% url 'levantamientos' %}">Lev. Campo</a>
                                     <div class="dropdown-divider"></div>
+                                    <!--<a class="dropdown-item" href="#">Dibujo</a>
+                                    <div class="dropdown-divider"></div>-->
                                     <a class="dropdown-item" href="{% url 'reports'%}">Informes</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url 'levels' %}">Curvas de Nivel</a>
@@ -42,10 +44,12 @@
                                     <a class="dropdown-item" href=" {% url 'replant' %}">Replanteos</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url 'cadastral' %}">Catastros</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'corrections' %}">Correciones APT</a>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'levantamientos' %}">Levantamientos de Campo</a>
+                                <a class="nav-link" href="{% url 'solicitud' %}">Solicitudes en General</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>

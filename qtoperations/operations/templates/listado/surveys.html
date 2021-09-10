@@ -6,9 +6,9 @@
         <thead>
             <tr>
                 <th>Solicitud</th>
-                <th>Fecha de Entrega</th>
+                <th>Asignado a:</th>
                 <th>Localización</th>
-                <th>Fecha Tentativa</th>
+                <th>Área</th>
                 <th>Fecha Propuesta</th>
                 <th>Fecha Lev. de Campo</th>
                 <th>Conclusión LevCampo</th>
@@ -22,9 +22,9 @@
                 {% for element in object_list %}
                 <tr>
                     <td><a href="{% url 'complete-request' element.solicitud_id.service_id element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{element.tentativeDate}}</td>
+                    <td>{{element.assigned_to}}</td>
+                    <td>{{element.solicitud_id.location}}</td>
+                    <td>{{element.solicitud_id.area}}</td> 
                     <td>{{element.proposedDate}}</td>
                     <td>{{element.fieldSurveyDate}}</td>
                     <td>{{element.conclusionDate}}</td>

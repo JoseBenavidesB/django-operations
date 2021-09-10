@@ -20,7 +20,7 @@ class ServicesForm(ModelForm):
 class SolicitudForm(ModelForm):
     class Meta:
         model = Solicitudes
-        fields = 'name', 'customer_id', 'service_id', 'contact', 'deliveryDate', 'plan', 'status'
+        fields = 'quote', 'customer_id', 'service_id', 'contact', 'deliveryDate', 'plan', 'status'
 
 class SurveyForm(ModelForm):
     class Meta:
@@ -45,4 +45,9 @@ class CadastralForm(ModelForm):
 class ReplantForm(ModelForm):
     class Meta:
         model = Replant
+        fields = '__all__'
+
+class CorrectionForm(ModelForm):
+    class Meta:
+        model = Corrections
         fields = '__all__'

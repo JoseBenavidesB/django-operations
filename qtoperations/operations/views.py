@@ -12,7 +12,7 @@ import datetime
 
 # Create your views here.
 def index(request):
-    contexto = "<h1>ESTE ES EL INDICE</h1>"
+    contexto = "<h1>Bienvenido, por favor selecciona una opción de la barra superior</h1>"
     titulo = 'Inicio'
     return render(request, 'layout/layout.html', {'context':contexto, 'title': titulo})
 
@@ -430,8 +430,53 @@ class CadastralUpdateView(UpdateView):
 
 
 #crear Correciones
+class CorrectionCreateView(CreateView):
+    model= Corrections
+    form_class = CorrectionForm
+    template_name = 'formularios/create-correction.html'
+    success_url = reverse_lazy('corrections')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Nueva Correción'
+        context['buttom'] = 'Crear Registro'
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 #listar correciones
+class CorrectionListView(ListView):
+    model = Corrections
+    template_name = 'listado/corrections.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#actualizad correciones
+class CorrectionUpdateView(UpdateView):
+    model = Corrections
+    form_class = CorrectionForm
+    template_name = 'formularios/create-correction.html'
+    success_url = reverse_lazy('corrections')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Actualizar Registro de Correción'
+        context['buttom'] = 'Actualizar Registro'
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 
 #crear replanteo
 class ReplantCreateView(CreateView):
@@ -456,6 +501,11 @@ class ReplantCreateView(CreateView):
 class ReplantListView(ListView):
     model = Replant
     template_name = 'listado/replant.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 #Actualizar Replanteo
 class ReplantUpdateView(UpdateView):

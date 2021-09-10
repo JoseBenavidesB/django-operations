@@ -6,8 +6,8 @@
         <thead>
             <tr>
                 <th>Solicitud</th>
+                <th>Asignado a</th>
                 <th>Info. Armada</th>
-                <th>Plano Alineado</th>
                 <th>Archivos de Replanteo</th>
                 <th>Replanteo en Sitio</th>
                 <th>Fotos Descargadas</th>
@@ -23,8 +23,8 @@
                 {% for element in object_list %}
                 <tr>
                     <td><a href="{% url 'complete-request' element.solicitud_id.service_id element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
+                    <td>{{element.assigned_to}}</td>
                     <td>{{element.armedInformation}}</td>
-                    <td>{{element.alignedPlan}}</td>
                     <td>{{element.files_replant}}</td>
                     <td>{{element.replantingPoints}}</td>
                     <td>{{element.downloadedPhotos}}</td>

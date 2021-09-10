@@ -6,11 +6,11 @@
         <thead>
             <tr>
                 <th>Reporte</th>
-                <th>Info. Armada</th>
-                <th>Alineado de Plano</th>
                 <th>Fotos Descargadas</th>
                 <th>Croquis</th>
+                <th>Encargado de Croquis</th>
                 <th>Redacción</th>
+                <th>Encargado de Redacción</th>
                 <th>Revisión</th>
                 <th>Revisión Final</th>
                 <th>Reporte enviado el:</th>
@@ -22,11 +22,11 @@
                 {% for element in object_list %}
                 <tr>
                     <td><a href="{% url 'complete-request' element.solicitud_id.service_id element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
-                    <td>{{element.armedInformation}}</td>
-                    <td>{{element.alignedPlan}}</td>
                     <td>{{element.downloadedPhotos}}</td>
                     <td>{{element.sketch}}</td>
+                    <td>{{element.assigned_to}}</td>
                     <td>{{element.drafting}}</td>
+                    <td>{{element.assigned_2}}</td>
                     <td>{{element.review}}</td>
                     <td>{{element.finalReview}}</td>
                     <td>{{element.submittedReport}}</td>

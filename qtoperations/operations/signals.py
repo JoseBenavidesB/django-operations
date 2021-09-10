@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from operations.models import Solicitudes, FieldSurvey, Reports, levelCurves, CadastralPlans, Replant
+from operations.models import *
 
 
 @receiver(post_save, sender=Solicitudes) #there are two ways to use signals, the most easy is use decorator

@@ -2,25 +2,49 @@ from django.db import models
 from django.core.validators import MinValueValidator
 import datetime
 
-# Create your models here.
+
+# Create your models here
+
+#DEPARTAMENTOS
+class Department(models.Model):
+
+    name = models.CharField(max_length=50, null=True, blank=False, verbose_name="Departamento:", unique=True, help_text="Escriba el nombre del departamento")
+    
+    class Meta:
+        verbose_name = "Departamento"
+        verbose_name_plural = "Departamentos"
+
+    def __str__(self):
+        return f'{self.name}'
+
 #ocupaciones
 class Ocupations(models.Model):
-    pass
+
+    name = models.CharField(max_length=50, null=True, blank=False, unique=True, verbose_name="Nombre de Ocupación", help_text="Escriba el nombre de la ocupación")
+
+    class Meta:
+        verbose_name='Ocupación'
+        verbose_name_plural = 'Ocupaciones'
+
+    def __str__(self):
+        return self.name
 
 #empleados
-class Employess(models.Model):
+class Employees(models.Model):
+
     name= models.CharField(max_length=25, verbose_name='Nombre', blank=False, null=False)
     last_name = models.CharField(max_length=50, verbose_name='Apellidos', blank=True, null=True)
     email = models.EmailField(max_length=250, unique=True)
     phone_number = models.CharField(max_length=20, verbose_name='Telefono', blank=True, null=False)
     ocupation = models.ForeignKey(Ocupations, on_delete=models.DO_NOTHING, verbose_name='Ocupación', null=True)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True, verbose_name="Departamento")
 
     class Meta:
         verbose_name= 'Empleado'
         verbose_name_plural = 'Empleados'
 
     def __str__(self):
-        return '{self.name} {self.last_name} ({self.ocupation})'
+        return f'{self.name}'
 
 #empresas
 class Empresas(models.Model):
@@ -37,8 +61,20 @@ class Empresas(models.Model):
 
 #clientes
 class Customers(models.Model):
+    nacionalidad = [
+        ('estranjero', 'Estranjero'),
+        ('residente', 'Residente'),
+        ('costarricense', 'Costarricense')
+    ]
+
     name = models.CharField(max_length=100, verbose_name='Nombre', null=False)
     lastName = models.CharField(max_length=100, verbose_name='Apellidos', blank=True, null=True)
+    cedula = models.CharField(max_length=30, unique=True, null=True, blank=True, verbose_name="Cédula o pasaporte")
+    nacionalidad = models.CharField(max_length=20, choices=nacionalidad, null=True, blank=False, verbose_name="Nacionalidad")
+    direction = models.CharField(max_length=250, null=True, blank=True, verbose_name="Dirección")
+    province = models.CharField(max_length=30, null=True, blank=True, verbose_name="Provincia")
+    canton = models.CharField(max_length=30, null=True, blank=True, verbose_name="Cantón")
+    district = models.CharField(max_length=30, null=True, blank=True, verbose_name="Distrito")
     phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
     empresa = models.ForeignKey(Empresas, on_delete=models.SET_NULL, null=True)
@@ -49,7 +85,6 @@ class Customers(models.Model):
 
     def __str__(self):
         return f'{self.name}({self.empresa})'
-
 
 #servicios
 class Services(models.Model):
@@ -62,24 +97,97 @@ class Services(models.Model):
     def __str__(self):
         return str(self.typeService)
 
+#COTIZACIONES
+class Quotes(models.Model):
+    estados = [
+        ('PR', 'Pendiente Revisión'),
+        ('EC', 'Enviado al Cliente'),
+        ('PE', 'Pendiente de Envio'),
+        ('R', 'Rechazado'),
+        ('A', 'Aprobada')
+    ]
+    description = models.CharField(max_length=100, null=True, blank=False, verbose_name="Descripción", help_text="Descripción de la cotización")
+    service = models.ForeignKey(Services, on_delete=models.DO_NOTHING, null=True, verbose_name='Servicio')
+    customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente", related_name="quote_customer")
+    contact = models.CharField(max_length=50, null=True, blank=True, verbose_name="Contacto", help_text="Escriba el nombre del contacto")
+    amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto con 2 decimales")
+    amount2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en ¢",blank=True, null=True, help_text="Digite el monto con 2 decimales")
+    date = models.DateField(auto_now_add=True, verbose_name="Fecha de cotización") 
+    final_customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente Final")
+    status = models.CharField(max_length=15, null=True, verbose_name="Estatus", choices=estados, default='PR')
+    
+    class Meta:
+        verbose_name = 'Cotización'
+        verbose_name_plural = 'Cotizaciones'
+
+    def __str__(self):
+        return f'{self.id}-{self.description}||{self.final_customer}'
+
+#pago
+class Payments(models.Model):
+    quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, verbose_name="Cotización", related_name="payment_quote")
+    bill1 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #1")
+    amount_bill1 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto con 2 decimales")
+    date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura")
+    bill2 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #2")
+    amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto con 2 decimales")
+    date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura")
+
+    "nombre, identidicacion, correo, direccion, provincia, distrito, canton, cotizacion, precio, fecha cotizacion, costo, factura, numero de factura, fecha, monto, deposito, "
+    class Meta:
+        verbose_name = "Pago"
+        verbose_name_plural = "Pagos"
+
+    def __str__(self):
+        return f'Pago de {self.quote}'
+
+#preliminar
+class Preliminary(models.Model):
+    estados = [
+        ('pendiente', 'Pendiente'),
+        ('finalizado', 'Finalizado'),
+        ('atrasado', 'Atrasado'),
+        ('cancelado', 'Cancelado'),
+        ('enProceso', 'En proceso'),
+    ]
+
+    quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Cotización')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="preliminary_assigned")
+    locationMark = models.DateField(null=True, blank=True, verbose_name="Marca de Ubicación")
+    googleMaps = models.DateField(null=True, blank=True, verbose_name="GoogleMap")
+    sketch = models.DateField(null=True, blank=True, verbose_name="Croquis Preliminares")
+    document = models.DateField(null=True, blank=True, verbose_name="Modificación preliminar del documento")
+    status = models.CharField(max_length=15, null=True, verbose_name="Estatus", choices=estados)
+
+    class Meta:
+        verbose_name = 'Preliminar'
+        verbose_name_plural = 'Preliminares'
+
+    def __str__(self):
+        return f'Preliminar de {self.quote}'
+
 #solicitudes
 class Solicitudes(models.Model):
 
     estados = [
-        ('pendiente', 'Pendiente'),
-        ('entregado', 'Entregado'),
-        ('atrasado', 'Atrasado'),
-        ('cancelado', 'Cancelado'),
+        ('Pendiente', 'Pendiente'),
+        ('Finalizado', 'Finalizado'),
+        ('En proceso', 'En proceso'),
+        ('Entregado', 'Entregado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
     ]
 
-    name = models.CharField(max_length=150, verbose_name='Solicitudes', null=False, blank=False)
+    quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Descripción')
     customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
     service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
     contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
     deliveryDate = models.DateField(validators=[MinValueValidator(datetime.date.today)], blank=True, null=True ,verbose_name='Fecha Entrega')
     plan = models.ImageField(default='null', verbose_name='Plano', upload_to='planos')
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
-    survey = models.BooleanField(default=True, verbose_name='Necesita Lev Campo?')
+    location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
+    area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
+    #survey = models.BooleanField(default=True, verbose_name='Necesita Lev Campo?')
 
     class Meta:
         verbose_name = 'Solicitud'
@@ -87,24 +195,21 @@ class Solicitudes(models.Model):
         #event tiene FK a venueob, 
 
     def __str__(self):
-        return f' Solicitud {self.id}-{self.name} [{self.customer_id}]'
+        return f' Solicitud {self.quote}'
 
         """for access Reportes = Reports.objects.select_related('nombre del campo en este caso solicitud_id')
         luego para acceder a los valores del otro se utiliza:
         i.solicitud_id.status"""
-#PRELIMINAR
-class Preliminary(models.Model):
-    pass
-
 
 #levantamiento de campo
 class FieldSurvey(models.Model):
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='solicitudField')
-    tentativeDate = models.DateField(blank=True, null=True, verbose_name='Fecha Tentativa')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta')
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo')
     conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión')
     downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos')
+    armed_information = models.DateField(blank=True, null=True, verbose_name='Info. armada')
 
     class Meta:    
         verbose_name='Levantamiento de Campo'
@@ -113,15 +218,37 @@ class FieldSurvey(models.Model):
     def __str__(self):
         return f'Lev Campo {self.solicitud_id}'
 
+#DIBUJO la idea es meter el dibujo a cada servicio en la tabla donde la solicitud sea igual tanto para dibujo como levCampo, informe, catastro
+class Draw(models.Model):
+    estados= {
+        ('sin_concluir', 'Sin concluir'),
+        ('finalizado', 'Finalizado' )
+    }
+
+    solicitud = models.ForeignKey(Solicitudes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudDraw')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="draw_assigned")
+    armed_information = models.DateField(null=True, blank=True, verbose_name='Lev armado')
+    aligned_plan = models.DateField(null=True, blank=True, verbose_name='Plano Alineado')
+    sketch = models.DateField(null=True, blank=True, verbose_name="Croquis")
+    review = models.DateField(null=True, blank=True, verbose_name="Revisado")
+    status = models.CharField(max_length=15, choices=estados, default='Sin concluir', verbose_name='Estado')
+
+    class Meta:
+        verbose_name = 'Dibujo'
+        verbose_name_plural = 'Dibujos'
+    
+    def __str__(self):
+        return f'Dibujo|| {self.solicitud}'
+
 
 #informes
 class Reports(models.Model):
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
-    armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
-    alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
-    sketch = models.DateField(blank=True, null=True, verbose_name='Dibujo de Croquis')
+    sketch = models.DateField(null=True, blank=True, verbose_name='Croquis')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned")
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
+    assigned_2 = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned2")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     finalReview = models.DateField(blank=True, null=True, verbose_name='Revisón Final')
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte enviado el:')
@@ -137,8 +264,9 @@ class Reports(models.Model):
 #curvas de nivel
 class levelCurves(models.Model):
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudLevel')
-    draw = models.DateField(blank=True, null=True, verbose_name='Fecha Dibujo')
-    sketch = models.DateField(blank=True, null=True, verbose_name='Laminas Terminadas')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="levelcurves_assigned")
+    draw = models.DateField(blank=True, null=True, verbose_name='Dibujo')
+    presentation = models.DateField(blank=True, null=True, verbose_name='Presentación')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     submittedCurves = models.DateField(blank=True, null=True, verbose_name='Curvas entregadas el:')
 
@@ -163,7 +291,7 @@ class CadastralPlans(models.Model):
     ]
 
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudCadastral')
-    draw = models.DateField(blank=True, null=True, verbose_name='Fecha Dibujo')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="cadastralplans_assigned")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     timbres = models.DateField(blank=True, null=True, verbose_name='Timbres comprados')
     uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT')
@@ -179,6 +307,7 @@ class CadastralPlans(models.Model):
 #correciones catastro
 class Corrections(models.Model):
     cadastral_id= models.ForeignKey(CadastralPlans, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Catastro')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="corrections_assigned")
     downloadedMinute = models.DateField(blank=True, null=True, verbose_name='Minuta Descargada') 
     errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores')
     corrections = models.DateField(blank=True, null=True, verbose_name='Correciones')
@@ -194,16 +323,14 @@ class Corrections(models.Model):
 #replanteo 
 class Replant(models.Model):
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
-    armedInformation = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
-    alignedPlan = models.DateField(blank=True, null=True, verbose_name='Plano Alineado')
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="replant_assigned")
+    armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
     files_replant = models.DateField(blank=True, null=True, verbose_name='Archivos de Replanteo') 
     replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
-    sketch = models.DateField(blank=True, null=True, verbose_name='Laminas Terminadas')
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
     review = models.DateField(blank=True, null=True, verbose_name='Revisión')
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:')
-    task_manager = models.ForeignKey(Employess, on_delete=models.DO_NOTHING, verbose_name='Asignado a:')
 
     class Meta:
         verbose_name = 'Replanteo'
@@ -212,27 +339,7 @@ class Replant(models.Model):
     def __str__(self):
         return f'Replanteo||{self.solicitud_id}'
 
-class Draw(models.Model):
-    estados= {
-        ('sin_concluir', 'Sin concluir'),
-        ('finalizado', 'Finalizado' )
-    }
 
-    solicitud = models.ForeignKey(Solicitudes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudDraw')
-    armed_information = models.DateField(null=True, blank=True, verbose_name='Lev armado')
-    aligned_plan = models.DateField(null=True, blank=True, verbose_name='Plano Alineado')
-    sketch = models.DateField(null=True, blank=True, verbose_name="Croquis")
-    review = models.DateField(null=True, blank=True, verbose_name="Revisado")
-    status = models.CharField(max_length=15, choices=estados, default='Sin concluir', verbose_name='Estado')
-    task_manager = models.ForeignKey(Employess, on_delete=models.DO_NOTHING, verbose_name='Asignado a:')
-
-    class Meta:
-        verbose_name = 'Dibujo'
-        verbose_name_plural = 'Dibujos'
-    
-    def __str__(self):
-        return f'Dibujo|| {self.solicitud}'
-    pass
 
 '''nota, puedo poner lev de campo y que este le lleve a la solicitud, 
 que el informe me lleve al estado del lev de campo

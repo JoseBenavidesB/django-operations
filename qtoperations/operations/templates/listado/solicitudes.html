@@ -1,7 +1,7 @@
 {% extends 'layout/listar.html' %}
 
 {% block table %}
-    <h1 class='text-center'>Listado de Solicitudes</h1>
+    <h1 class='text-center'>Listado de Solicitudes en General</h1>
     <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -13,6 +13,7 @@
                 <th>Entrega</th>
                 <th>Imagen Plano</th>
                 <th>Estado</th>
+                <th>Localizado en</th>
                 <th>Editar</th>
             </tr>
         </thead>
@@ -21,13 +22,14 @@
                 {% for element in object_list %}
                 <tr>
                     <td>{{element.id}}</td>
-                    <td>{{element.name}}</td>
+                    <td>{{element.quote}}</td>
                     <td>{{element.customer_id}}</td>
                     <td><a href=" {% url 'complete-request' element.service_id element.id %} ">{{element.service_id}}</a></td>
                     <td>{{element.contact}}</td>
                     <td>{{element.deliveryDate}}</td>
                     <td><a href="{{element.plan.url}}" target="_blank"> <img src="{{element.plan.url}}" alt="" style= "max-height:3rem" ></a></td>
                     <td>{{element.status}}</td>
+                    <td>{{element.location}}</td>
                     <td><a href="{% url 'edit-request' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 {% endfor %}
         </tbody>

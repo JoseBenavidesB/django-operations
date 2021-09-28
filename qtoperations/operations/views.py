@@ -326,10 +326,6 @@ class ReportUpadateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-
-
-
-
 #crear Curvas De Nivel
 class LevelCreateView(CreateView):
     model = levelCurves
@@ -423,7 +419,7 @@ class CadastralUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -432,7 +428,7 @@ class CadastralUpdateView(UpdateView):
 #crear Correciones
 class CorrectionCreateView(CreateView):
     model= Corrections
-    form_class = CorrectionForm
+    form_class = CorregirAPT
     template_name = 'formularios/create-correction.html'
     success_url = reverse_lazy('corrections')
 
@@ -453,15 +449,15 @@ class CorrectionListView(ListView):
     model = Corrections
     template_name = 'listado/corrections.html'
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
 #actualizad correciones
-class CorrectionUpdateView(UpdateView):
+class CorreccionUpdateView(UpdateView):
     model = Corrections
-    form_class = CorrectionForm
+    form_class = CorregirAPT
     template_name = 'formularios/create-correction.html'
     success_url = reverse_lazy('corrections')
 
@@ -471,7 +467,7 @@ class CorrectionUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -491,7 +487,7 @@ class ReplantCreateView(CreateView):
         context['buttom'] = 'Crear Registro'
         return context
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -502,7 +498,7 @@ class ReplantListView(ListView):
     model = Replant
     template_name = 'listado/replant.html'
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -520,7 +516,7 @@ class ReplantUpdateView(UpdateView):
         context['buttom'] = 'Actualizar Registro'
         return context  
 
-    "to keep secure the view"
+    #"to keep secure the view"
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -555,6 +551,7 @@ class LogoutFormView(LogoutView):
 def complete_request(request, servicio, id):
     campo = Solicitudes.objects.get(id=id).fieldsurvey_set.all()
     solicitud = Solicitudes.objects.get(id=id)
+    preliminar = Preliminary.objects.get(id= Solicitudes.objects.get(id=id).quote.id)
     template=''
     service=''
     if servicio == 'Informe':
@@ -570,7 +567,10 @@ def complete_request(request, servicio, id):
         service = Solicitudes.objects.get(id=id).solicitudLevel.all() 
         template='detalles/detail-level.html'  
         
-    return render(request, template, {'solicitud':solicitud, 'service':service, 'campo': campo})
+    return render(request, template, {'solicitud':solicitud, 'service':service, 'campo': campo, 'preliminar':preliminar})
 
 #puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
 #se debe filtrar id.informe = id.
+
+#hacer pendientes en pagína de inicio que redirija a cada estatus
+#pendiente, link a resumen 

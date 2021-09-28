@@ -36,9 +36,9 @@ urlpatterns = [
     path('logout/', views.LogoutFormView.as_view(), name='logout'),
     path('<int:pk>', views.ReportDetailView.as_view(), name='detail'),
     path('<str:servicio>/<int:id>', views.complete_request, name='complete-request'),
-    path('create-correction', views.CorrectionCreateView.as_view(), name='create-correction'),
-    path('corrections', views.CorrectionListView.as_view(), name='corrections'),
-    path('edit-correction/<int:pk>', views.CorrectionUpdateView.as_view(), name='edit-correction')
+    path('apt/create-correction', views.CorrectionCreateView.as_view(), name='create-correction'),
+    path('apt/corrections', views.CorrectionListView.as_view(), name='corrections'),
+    path('apt/correction/<int:pk>', views.CorreccionUpdateView.as_view(), name='edit-correction')
 
 
 

@@ -10,11 +10,20 @@
                             </div>
                             <div class="col">
                                 <div class="card-body">
-                                    <h3 class="card-title">{{solicitud.id}}|{{ solicitud.name }}</h3>
-                                    <p class="card-text">Cliente: {{ solicitud.customer_id }}.</p><hr>
+                                    <h3 class="card-title">ID de Solicitud:[{{solicitud.id}}]|{{ solicitud.name }}</h3>
+                                    <p class="card-text">Cliente: {{ solicitud.customer_id }}.</p>
+                                    <p class="card-text">Contacto en sitio: {{ solicitud.contact }}.</p><hr>
                                     <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
 
-                                        <h3 class="card-title">Preliminar</h3><hr>
+                                         <!--preliminar-->
+                                            <h3 class="card-title">Preliminar</h3>
+                                            <p class="card-text">Asignado a: {{preliminar.assigned_to}}.</p>
+                                            <p class="card-text">Marca Ubicación: {{preliminar.locationMark}}.</p>
+                                            <p class="card-text">Google Maps: {{preliminar.googleMaps}}.</p>
+                                            <p class="card-text">Croquis preliminares: {{preliminar.sketch}}.</p>
+                                            <p class="card-text">Preliminar de Documento: {{preliminar.document}}.</p>
+                                            <p class="card-text">Estado: {{preliminar.status}}.</p><hr>
+                                        
 
                                         <!-- third fieldSurvey-->
                                         {% for element in campo %}

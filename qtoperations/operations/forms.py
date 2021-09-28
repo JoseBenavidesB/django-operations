@@ -47,7 +47,7 @@ class ReplantForm(ModelForm):
         model = Replant
         fields = '__all__'
 
-class CorrectionForm(ModelForm):
+class CorregirAPT(ModelForm):
     class Meta:
         model = Corrections
         fields = '__all__'

@@ -15,6 +15,7 @@
                 <th>Redacción de Doc.</th>
                 <th>Revisión</th>
                 <th>Reporte enviado el:</th>
+                <th>Estado</th>
                 <th>Editar</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                     <td>{{element.drafting}}</td>
                     <td>{{element.review}}</td>
                     <td>{{element.submittedReport}}</td>
+                    <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-replant' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 </tr>
                 {% endfor %}

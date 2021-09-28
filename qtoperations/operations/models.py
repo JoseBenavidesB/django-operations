@@ -128,10 +128,10 @@ class Payments(models.Model):
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, verbose_name="Cotización", related_name="payment_quote")
     bill1 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #1")
     amount_bill1 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto con 2 decimales")
-    date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura")
+    date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura", help_text= "Colocar Fecha mm/dd/año")
     bill2 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #2")
     amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto con 2 decimales")
-    date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura")
+    date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura", help_text= "Colocar Fecha dd/mm/año")
 
     "nombre, identidicacion, correo, direccion, provincia, distrito, canton, cotizacion, precio, fecha cotizacion, costo, factura, numero de factura, fecha, monto, deposito, "
     class Meta:
@@ -153,11 +153,11 @@ class Preliminary(models.Model):
 
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Cotización')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="preliminary_assigned")
-    locationMark = models.DateField(null=True, blank=True, verbose_name="Marca de Ubicación")
+    locationMark = models.DateField(null=True, blank=True, verbose_name="Marca de Ubicación", help_text= "Colocar Fecha dd/mm/año")
     googleMaps = models.DateField(null=True, blank=True, verbose_name="GoogleMap")
     sketch = models.DateField(null=True, blank=True, verbose_name="Croquis Preliminares")
     document = models.DateField(null=True, blank=True, verbose_name="Modificación preliminar del documento")
-    status = models.CharField(max_length=15, null=True, verbose_name="Estatus", choices=estados)
+    status = models.CharField(max_length=15, null=True, verbose_name="Estatus", default='Pendiente', choices=estados)
 
     class Meta:
         verbose_name = 'Preliminar'
@@ -182,13 +182,13 @@ class Solicitudes(models.Model):
     customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
     service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
     contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
-    deliveryDate = models.DateField(validators=[MinValueValidator(datetime.date.today)], blank=True, null=True ,verbose_name='Fecha Entrega')
+    deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega', help_text= "Colocar Fecha dd/mm/año")
     plan = models.ImageField(default='null', verbose_name='Plano', upload_to='planos')
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
     location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
     area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
     #survey = models.BooleanField(default=True, verbose_name='Necesita Lev Campo?')
-
+    #validators=[MinValueValidator(datetime.date.today)] para validar que la fecha minima
     class Meta:
         verbose_name = 'Solicitud'
         verbose_name_plural = 'Solicitudes'
@@ -203,13 +203,22 @@ class Solicitudes(models.Model):
 
 #levantamiento de campo
 class FieldSurvey(models.Model):
+    estados = [
+        ('Pendiente', 'Pendiente'),
+        ('Finalizado', 'Finalizado'),
+        ('En proceso', 'En proceso'),
+        ('Entregado', 'Entregado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
+    ]    
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='solicitudField')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
-    proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta')
-    fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo')
-    conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión')
-    downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos')
-    armed_information = models.DateField(blank=True, null=True, verbose_name='Info. armada')
+    proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta', help_text= "Colocar Fecha dd/mm/año")
+    fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo', help_text= "Colocar Fecha dd/mm/año")
+    conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión', help_text= "Colocar Fecha dd/mm/año")
+    downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos', help_text= "Colocar Fecha dd/mm/año")
+    armed_information = models.DateField(blank=True, null=True, verbose_name='Info. armada', help_text= "Colocar Fecha dd/mm/año")
+    status = models.CharField(max_length=15, choices=estados, default='Pendiente', verbose_name='Estado')
 
     class Meta:    
         verbose_name='Levantamiento de Campo'
@@ -227,10 +236,10 @@ class Draw(models.Model):
 
     solicitud = models.ForeignKey(Solicitudes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudDraw')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="draw_assigned")
-    armed_information = models.DateField(null=True, blank=True, verbose_name='Lev armado')
-    aligned_plan = models.DateField(null=True, blank=True, verbose_name='Plano Alineado')
-    sketch = models.DateField(null=True, blank=True, verbose_name="Croquis")
-    review = models.DateField(null=True, blank=True, verbose_name="Revisado")
+    armed_information = models.DateField(null=True, blank=True, verbose_name='Lev armado', help_text= "Colocar Fecha dd/mm/año")
+    aligned_plan = models.DateField(null=True, blank=True, verbose_name='Plano Alineado', help_text= "Colocar Fecha dd/mm/año")
+    sketch = models.DateField(null=True, blank=True, verbose_name="Croquis", help_text= "Colocar Fecha dd/mm/año")
+    review = models.DateField(null=True, blank=True, verbose_name="Revisado", help_text= "Colocar Fecha dd/mm/año")
     status = models.CharField(max_length=15, choices=estados, default='Sin concluir', verbose_name='Estado')
 
     class Meta:
@@ -243,15 +252,24 @@ class Draw(models.Model):
 
 #informes
 class Reports(models.Model):
+    estados = [
+        ('Pendiente', 'Pendiente'),
+        ('Finalizado', 'Finalizado'),
+        ('En proceso', 'En proceso'),
+        ('Entregado', 'Entregado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
+    ]
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
-    downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
-    sketch = models.DateField(null=True, blank=True, verbose_name='Croquis')
+    downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")
+    sketch = models.DateField(null=True, blank=True, verbose_name='Croquis', help_text= "Colocar Fecha dd/mm/año")
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned")
-    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
+    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.', help_text= "Colocar Fecha dd/mm/año")
     assigned_2 = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned2")
-    review = models.DateField(blank=True, null=True, verbose_name='Revisión')
-    finalReview = models.DateField(blank=True, null=True, verbose_name='Revisón Final')
-    submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte enviado el:')
+    review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
+    finalReview = models.DateField(blank=True, null=True, verbose_name='Revisón Final', help_text= "Colocar Fecha dd/mm/año")
+    submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte enviado el:', help_text= "Colocar Fecha dd/mm/año")
+    status = models.CharField(max_length=15, choices=estados, default='En Proceso', verbose_name='Estado')
 
     class Meta:    
         verbose_name='Informe'
@@ -263,12 +281,23 @@ class Reports(models.Model):
 
 #curvas de nivel
 class levelCurves(models.Model):
+
+    estados = [
+        ('Pendiente', 'Pendiente'),
+        ('Finalizado', 'Finalizado'),
+        ('En proceso', 'En proceso'),
+        ('Entregado', 'Entregado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
+    ]
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudLevel')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="levelcurves_assigned")
-    draw = models.DateField(blank=True, null=True, verbose_name='Dibujo')
-    presentation = models.DateField(blank=True, null=True, verbose_name='Presentación')
-    review = models.DateField(blank=True, null=True, verbose_name='Revisión')
-    submittedCurves = models.DateField(blank=True, null=True, verbose_name='Curvas entregadas el:')
+    draw = models.DateField(blank=True, null=True, verbose_name='Dibujo', help_text= "Colocar Fecha dd/mm/año")
+    presentation = models.DateField(blank=True, null=True, verbose_name='Presentación', help_text= "Colocar Fecha dd/mm/año")
+    review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
+    submittedCurves = models.DateField(blank=True, null=True, verbose_name='Curvas entregadas el:', help_text= "Colocar Fecha dd/mm/año")
+    status = models.CharField(max_length=15, choices=estados, default='En Proceso', verbose_name='Estado')
+
 
     class Meta:    
         verbose_name='Curvas de Nivel'
@@ -292,9 +321,9 @@ class CadastralPlans(models.Model):
 
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudCadastral')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="cadastralplans_assigned")
-    review = models.DateField(blank=True, null=True, verbose_name='Revisión')
-    timbres = models.DateField(blank=True, null=True, verbose_name='Timbres comprados')
-    uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT')
+    review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
+    timbres = models.DateField(blank=True, null=True, verbose_name='Timbres comprados', help_text= "Colocar Fecha dd/mm/año")
+    uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT', help_text= "Colocar Fecha dd/mm/año")
     status = models.CharField(max_length=15, choices=estados, default='Sin Tramitar', verbose_name="Estado")
     #aqui deberia ser, estadus: pendiente, revision, cancelado, rebotado, inscrito
     class Meta:
@@ -308,10 +337,10 @@ class CadastralPlans(models.Model):
 class Corrections(models.Model):
     cadastral_id= models.ForeignKey(CadastralPlans, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Catastro')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="corrections_assigned")
-    downloadedMinute = models.DateField(blank=True, null=True, verbose_name='Minuta Descargada') 
-    errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores')
-    corrections = models.DateField(blank=True, null=True, verbose_name='Correciones')
-    uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT')
+    downloadedMinute = models.DateField(blank=True, null=True, verbose_name='Minuta Descargada', help_text= "Colocar Fecha dd/mm/año") 
+    errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores', help_text= "Colocar Fecha dd/mm/año")
+    corrections = models.DateField(blank=True, null=True, verbose_name='Correciones', help_text= "Colocar Fecha dd/mm/año")
+    uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT', help_text= "Colocar Fecha dd/mm/año")
 
     class Meta:
         verbose_name = 'Correción'
@@ -324,13 +353,13 @@ class Corrections(models.Model):
 class Replant(models.Model):
     solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="replant_assigned")
-    armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada')
-    files_replant = models.DateField(blank=True, null=True, verbose_name='Archivos de Replanteo') 
-    replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio')
-    downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas')
-    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.')
-    review = models.DateField(blank=True, null=True, verbose_name='Revisión')
-    submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:')
+    armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada', help_text= "Colocar Fecha dd/mm/año")
+    files_replant = models.DateField(blank=True, null=True, verbose_name='Archivos de Replanteo', help_text= "Colocar Fecha dd/mm/año") 
+    replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio', help_text= "Colocar Fecha dd/mm/año")
+    downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")
+    drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.', help_text= "Colocar Fecha dd/mm/año")
+    review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
+    submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:', help_text= "Colocar Fecha dd/mm/año")
 
     class Meta:
         verbose_name = 'Replanteo'

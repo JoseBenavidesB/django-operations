@@ -1,4 +1,6 @@
+{% load custom_tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,17 +22,23 @@
             <div class="background">
                 {% if request.user.is_authenticated %}
                     <nav class="barra">
-                        <ul class="nav nav-tabs justify-content-center ">
-                            
-                            <li class="nav-item">
-                                <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
+                        <ul class="nav nav-tabs navbar-expand-sm justify-content-center ">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Clientes
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link " href="{% url 'empresas' %}">Empresas</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
+                                    <div class="dropdown-divider"></div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
+                                <a class="nav-link" href="{% url 'solicitud' %}">Solicitudes en General</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Solicitudes
+                                Operativo
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{% url 'levantamientos' %}">Lev. Campo</a>
@@ -48,15 +56,40 @@
                                     <a class="dropdown-item" href="{% url 'corrections' %}">Correciones APT</a>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'solicitud' %}">Solicitudes en General</a>
-                            </li>
+                            {% if request.user|has_group:"administrativo" or request.user|has_group:"staff"%}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Administrativo
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{% url 'quotes' %}">Cotizaciones</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Empty</a>
+                                        <div class="dropdown-divider"></div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            {% if request.user|has_group:"financiero" or request.user|has_group:"staff"%}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Financiero
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{% url 'payments' %}">Pagos</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Empty</a>
+                                        <div class="dropdown-divider"></div>
+                                    </div>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
                             </li>
                             
                         </ul> 
                     </nav>
+                         <!--<p class="bienvenido">Bienvenido(a) <strong>{{ user }}</strong>, por favor, selecciona una opción de la barra superior </p>-->
+                        
                     {% else %}
                             <p class="bienvenido">Bienvenido, por favor <a href="{% url 'login' %}">inicia sesión</a></p>
                             

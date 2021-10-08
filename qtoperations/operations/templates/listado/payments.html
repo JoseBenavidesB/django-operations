@@ -1,0 +1,38 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Pagos</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Cotización</th>
+                <th>Número 1er Factura</th>
+                <th>Monto 1er Factura $</th>
+                <th>Fecha 1er Factura</th>
+                <th>Número 2da Factura</th>
+                <th>Monto 2da Factura $</th>
+                <th>Fecha 2da Factura</th>
+                <th>Comentario</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.quote}}</td>
+                    <td>{{element.bill1}}</td>
+                    <td>{{element.amount_bill1}}</td>
+                    <td>{{element.date_bill1}}</td>
+                    <td>{{element.bill2}}</td>
+                    <td>{{element.amount_bill2}}</td>
+                    <td>{{element.date_bill2}}</td>
+                    <td>{{element.note}}</td>
+                    <td><a href="{% url 'update-pay' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+            <img src="https://www.dropbox.com/s/0hhq06tygoa79s7/patricio-prueba.jpg?dl=0" alt="">
+
+{% endblock table %}

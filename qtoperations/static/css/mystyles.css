@@ -46,3 +46,6 @@ ul.nav li.active a {
 }
 
 ul.nav a:hover { color: red !important; }
+
+
+th.dt-center, td.dt-center { text-align: center; }

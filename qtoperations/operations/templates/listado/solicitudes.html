@@ -23,11 +23,15 @@
                 <tr>
                     <td>{{element.id}}</td>
                     <td>{{element.quote}}</td>
-                    <td>{{element.customer_id}}</td>
-                    <td><a href=" {% url 'complete-request' element.service_id element.id %} ">{{element.service_id}}</a></td>
-                    <td>{{element.contact}}</td>
+                    <td>{{element.quote.final_customer}}</td>
+                    <td><a href=" {% url 'complete-request' element.quote.service element.quote.id %} ">{{element.quote.service}}</a></td>
+                    <td>{{element.quote.contact}}</td>
                     <td>{{element.deliveryDate}}</td>
-                    <td><a href="{{element.plan.url}}" target="_blank"> <img src="{{element.plan.url}}" alt="" style= "max-height:3rem" ></a></td>
+                    {% if element.plan|length > 0 %}
+                        <td><a href="{{element.plan|slice:'-4'}}raw=1" target="_blank"> <img src="{{element.plan|slice:'-4'}}raw=1" alt="Imagen de Plano" style="max-height:3rem" ></a></td>
+                        {% else %}
+                        <td><img src="{{element.plan}}" alt="Imagen de Plano" style="max-height:3rem" ></td>
+                    {% endif %}
                     <td>{{element.status}}</td>
                     <td>{{element.location}}</td>
                     <td><a href="{% url 'edit-request' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>

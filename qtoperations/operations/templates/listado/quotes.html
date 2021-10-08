@@ -1,0 +1,40 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Cotizaciones</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Servicio</th>
+                <th>Cliente</th>
+                <th>Contacto</th>
+                <th>Monto $</th>
+                <th>Monto ¢</th>
+                <th>Fecha de Cotización</th>
+                <th>Cliente Final</th>
+                <th>Estado</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td>{{element.id}}</td>
+                    <td>{{element.description}}</td>
+                    <td>{{element.service}}</td>
+                    <td>{{element.customer}}</td>
+                    <td>{{element.contact}}</td>
+                    <td>{{element.amount}}</td>
+                    <td>{{element.amount2}}</td>
+                    <td>{{element.date}}</td>
+                    <td>{{element.final_customer}}</td>
+                    <td>{{element.status}}</td>
+                    <td><a href="{% url 'edit-quotes' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
+                {% endfor %}
+        </tbody>
+    </table>            
+{% endblock table %}
+

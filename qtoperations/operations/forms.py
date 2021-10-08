@@ -12,6 +12,15 @@ class CustomerForm(ModelForm):
         model=Customers
         fields = '__all__'
 
+class QuoteForm(ModelForm):
+    class Meta:
+        model = Quotes
+        fields = '__all__'
+class PayForm(ModelForm):
+    class Meta:
+        model = Payments
+        fields = '__all__'
+
 class ServicesForm(ModelForm):
     class Meta:
         model=Services
@@ -20,7 +29,7 @@ class ServicesForm(ModelForm):
 class SolicitudForm(ModelForm):
     class Meta:
         model = Solicitudes
-        fields = 'quote', 'customer_id', 'service_id', 'contact', 'deliveryDate', 'plan', 'status'
+        fields = 'quote', 'deliveryDate', 'plan', 'status'
 
 class SurveyForm(ModelForm):
     class Meta:

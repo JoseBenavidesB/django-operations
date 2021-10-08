@@ -38,7 +38,16 @@ urlpatterns = [
     path('<str:servicio>/<int:id>', views.complete_request, name='complete-request'),
     path('apt/create-correction', views.CorrectionCreateView.as_view(), name='create-correction'),
     path('apt/corrections', views.CorrectionListView.as_view(), name='corrections'),
-    path('apt/correction/<int:pk>', views.CorreccionUpdateView.as_view(), name='edit-correction')
+    path('apt/correction/<int:pk>', views.CorreccionUpdateView.as_view(), name='edit-correction'),
+    path('quote/create-quote', views.QuoteCreateView.as_view(), name='create-quote'),
+    path('quote/list-quotes', views.QuoteListView.as_view(), name='quotes'),
+    path('quote/edit-quote/<int:pk>', views.QuoteUpdateView.as_view(), name='edit-quotes'),
+    path('payment/create-pay', views.PaymentCreateView.as_view(), name='create-pay'),
+    path('payment/update-pay/<int:pk>', views.PaymentUpdateView.as_view(), name='update-pay'),
+    path('payment/payments', views.PaymentListView.as_view(), name='payments'),
+    
+    
+
 
 
 

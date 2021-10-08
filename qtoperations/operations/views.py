@@ -173,6 +173,103 @@ class ServicesUpdateView(UpdateView):
     @method_decorator(login_required(login_url='login'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+#Crear Cotizaciones
+class QuoteCreateView(CreateView):
+    model = Quotes
+    form_class = QuoteForm
+    template_name = 'formularios/create-quote.html'
+    success_url = reverse_lazy('quotes')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Nueva Cotización'
+        context['buttom'] = 'Crear Registro'
+        context['date'] = datetime.date.today()
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#listar Cotizaciones
+class QuoteListView(ListView):
+    model = Quotes
+    template_name = 'listado/quotes.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#actualizar cotizaciones
+class QuoteUpdateView(UpdateView):
+    model = Quotes
+    form_class = QuoteForm
+    template_name = 'formularios/create-quote.html'
+    success_url = reverse_lazy('quotes')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Actualizar Registro de Cotización'
+        context["buttom"] = 'Actualizar Registro'
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#crear pagos
+class PaymentCreateView(CreateView):
+    model = Payments
+    form_class = PayForm
+    template_name = 'formularios/create-pay.html'
+    success_url = reverse_lazy('payments')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Nuevo Pago'
+        context['buttom'] = 'Crear Registro'
+        context['date'] = datetime.date.today()
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#actualizar pago
+class PaymentUpdateView(UpdateView):
+    model = Payments
+    form_class = PayForm
+    template_name = 'formularios/create-pay.html'
+    success_url = reverse_lazy('payments')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Actualizar Pago'
+        context['buttom'] = 'Actualizar Registro'
+        context['date'] = datetime.date.today()
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#LISTAR PAGOS
+class PaymentListView(ListView):
+    model = Payments
+    template_name = 'listado/payments.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear solicitudes
 class SolicitudCreateView(CreateView):
     model=Solicitudes
@@ -549,25 +646,40 @@ class LogoutFormView(LogoutView):
 
 # LISTAR Todo lo de una solicitud
 def complete_request(request, servicio, id):
-    campo = Solicitudes.objects.get(id=id).fieldsurvey_set.all()
-    solicitud = Solicitudes.objects.get(id=id)
-    preliminar = Preliminary.objects.get(id= Solicitudes.objects.get(id=id).quote.id)
+    campo = FieldSurvey.objects.get(solicitud_id_id = id)
+    solicitud = Solicitudes.objects.get(quote_id = id)
+    preliminar = Preliminary.objects.get(quote_id = id)
     template=''
     service=''
+    service2 = ''
+    
     if servicio == 'Informe':
-        service = Solicitudes.objects.get(id=id).solicitudReport.all() 
+        service = Quotes.objects.get(id=id).solicitudReport.all() 
         template='detalles/detail-report.html'
     elif servicio == 'Plano Catastrado':
-        service = Solicitudes.objects.get(id=id).solicitudCadastral.all() 
+        service = Quotes.objects.get(id=id).solicitudCadastral.all() 
         template='detalles/detail-catastro.html'
     elif servicio == 'Replanteo':
-        service = Solicitudes.objects.get(id=id).solicitudReplant.all() 
+        service = Quotes.objects.get(id=id).solicitudReplant.all() 
         template='detalles/detail-replant.html'
-    else:
-        service = Solicitudes.objects.get(id=id).solicitudLevel.all() 
-        template='detalles/detail-level.html'  
+    elif servicio == 'Curvas de Nivel':
+        service = Quotes.objects.get(id=id).solicitudLevel.all() 
+        template='detalles/detail-level.html' 
+    elif servicio == 'Curvas de Nivel -- Replanteo':
+        service = Quotes.objects.get(id=id).solicitudLevel.all()
+        service2 = Quotes.objects.get(id=id).solicitudReplant.all()
+        template = 'detalles/detail-level-replant.html'
+    elif servicio == 'Informe -- Curvas de Nivel':
+        service = Quotes.objects.get(id=id).solicitudReport.all()
+        service2 = Quotes.objects.get(id=id).solicitudLevel.all()
+        template = 'detalles/detail-report-level.html'
+    elif servicio == 'Informe -- Replanteo':
+        service = Quotes.objects.get(id=id).solicitudReport.all()
+        service2 = Quotes.objects.get(id=id).solicitudReplant.all()
+        template = 'detalles/detail-report-replant.html'
+
         
-    return render(request, template, {'solicitud':solicitud, 'service':service, 'campo': campo, 'preliminar':preliminar})
+    return render(request, template, {'solicitud':solicitud, 'service':service, 'service2':service2, 'campo': campo, 'preliminar':preliminar})
 
 #puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
 #se debe filtrar id.informe = id.

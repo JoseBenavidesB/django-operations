@@ -62,9 +62,9 @@ class Empresas(models.Model):
 #clientes
 class Customers(models.Model):
     nacionalidad = [
-        ('estranjero', 'Estranjero'),
-        ('residente', 'Residente'),
-        ('costarricense', 'Costarricense')
+        ('Extranjero', 'Extranjero'),
+        ('Residente', 'Residente'),
+        ('Costarricense', 'Costarricense')
     ]
 
     name = models.CharField(max_length=100, verbose_name='Nombre', null=False)
@@ -77,7 +77,7 @@ class Customers(models.Model):
     district = models.CharField(max_length=30, null=True, blank=True, verbose_name="Distrito")
     phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
-    empresa = models.ForeignKey(Empresas, on_delete=models.SET_NULL, null=True)
+    empresa = models.ForeignKey(Empresas, on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
         verbose_name='Cliente'
@@ -100,39 +100,40 @@ class Services(models.Model):
 #COTIZACIONES
 class Quotes(models.Model):
     estados = [
-        ('PR', 'Pendiente Revisión'),
-        ('EC', 'Enviado al Cliente'),
-        ('PE', 'Pendiente de Envio'),
-        ('R', 'Rechazado'),
-        ('A', 'Aprobada')
+        ('Pendiente Revisión', 'Pendiente Revisión'),
+        ('Enviado al Cliente', 'Enviado al Cliente'),
+        ('Pendiente de Envio', 'Pendiente de Envio'),
+        ('Rechazado', 'Rechazado'),
+        ('Aprobada', 'Aprobada')
     ]
     description = models.CharField(max_length=100, null=True, blank=False, verbose_name="Descripción", help_text="Descripción de la cotización")
     service = models.ForeignKey(Services, on_delete=models.DO_NOTHING, null=True, verbose_name='Servicio')
     customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente", related_name="quote_customer")
     contact = models.CharField(max_length=50, null=True, blank=True, verbose_name="Contacto", help_text="Escriba el nombre del contacto")
-    amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto con 2 decimales")
-    amount2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en ¢",blank=True, null=True, help_text="Digite el monto con 2 decimales")
+    amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
+    amount2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en ¢",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
     date = models.DateField(auto_now_add=True, verbose_name="Fecha de cotización") 
-    final_customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente Final")
-    status = models.CharField(max_length=15, null=True, verbose_name="Estatus", choices=estados, default='PR')
+    final_customer = models.ForeignKey(Customers, null=True, blank=True, on_delete=models.DO_NOTHING, verbose_name="Cliente Final")
+    status = models.CharField(max_length=50, null=True, verbose_name="Estatus", choices=estados)
     
     class Meta:
         verbose_name = 'Cotización'
         verbose_name_plural = 'Cotizaciones'
 
     def __str__(self):
-        return f'{self.id}-{self.description}||{self.final_customer}'
+        return f'[{self.id}]-{self.description}||{self.final_customer}'
 
 #pago
 class Payments(models.Model):
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, verbose_name="Cotización", related_name="payment_quote")
     bill1 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #1")
-    amount_bill1 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto con 2 decimales")
+    amount_bill1 = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto (máximo 2 decimales)")
     date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura", help_text= "Colocar Fecha mm/dd/año")
     bill2 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #2")
-    amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto con 2 decimales")
+    amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)s")
     date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura", help_text= "Colocar Fecha dd/mm/año")
-
+    note = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
+   
     "nombre, identidicacion, correo, direccion, provincia, distrito, canton, cotizacion, precio, fecha cotizacion, costo, factura, numero de factura, fecha, monto, deposito, "
     class Meta:
         verbose_name = "Pago"
@@ -144,11 +145,11 @@ class Payments(models.Model):
 #preliminar
 class Preliminary(models.Model):
     estados = [
-        ('pendiente', 'Pendiente'),
-        ('finalizado', 'Finalizado'),
-        ('atrasado', 'Atrasado'),
-        ('cancelado', 'Cancelado'),
-        ('enProceso', 'En proceso'),
+        ('Pendiente', 'Pendiente'),
+        ('Finalizado', 'Finalizado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
+        ('En Proceso', 'En proceso'),
     ]
 
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Cotización')
@@ -173,17 +174,16 @@ class Solicitudes(models.Model):
         ('Pendiente', 'Pendiente'),
         ('Finalizado', 'Finalizado'),
         ('En proceso', 'En proceso'),
-        ('Entregado', 'Entregado'),
         ('Atrasado', 'Atrasado'),
         ('Cancelado', 'Cancelado'),
     ]
 
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Descripción')
-    customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
-    service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
-    contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
+    #customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
+    #service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
+    #contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
     deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega', help_text= "Colocar Fecha dd/mm/año")
-    plan = models.ImageField(default='null', verbose_name='Plano', upload_to='planos')
+    plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
     location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
     area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
@@ -205,13 +205,12 @@ class Solicitudes(models.Model):
 class FieldSurvey(models.Model):
     estados = [
         ('Pendiente', 'Pendiente'),
-        ('Finalizado', 'Finalizado'),
         ('En proceso', 'En proceso'),
         ('Entregado', 'Entregado'),
         ('Atrasado', 'Atrasado'),
         ('Cancelado', 'Cancelado'),
     ]    
-    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='solicitudField')
+    solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='solicitudField')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta', help_text= "Colocar Fecha dd/mm/año")
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo', help_text= "Colocar Fecha dd/mm/año")
@@ -234,7 +233,7 @@ class Draw(models.Model):
         ('finalizado', 'Finalizado' )
     }
 
-    solicitud = models.ForeignKey(Solicitudes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudDraw')
+    solicitud = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudDraw')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="draw_assigned")
     armed_information = models.DateField(null=True, blank=True, verbose_name='Lev armado', help_text= "Colocar Fecha dd/mm/año")
     aligned_plan = models.DateField(null=True, blank=True, verbose_name='Plano Alineado', help_text= "Colocar Fecha dd/mm/año")
@@ -254,13 +253,12 @@ class Draw(models.Model):
 class Reports(models.Model):
     estados = [
         ('Pendiente', 'Pendiente'),
-        ('Finalizado', 'Finalizado'),
         ('En proceso', 'En proceso'),
         ('Entregado', 'Entregado'),
         ('Atrasado', 'Atrasado'),
         ('Cancelado', 'Cancelado'),
     ]
-    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
+    solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")
     sketch = models.DateField(null=True, blank=True, verbose_name='Croquis', help_text= "Colocar Fecha dd/mm/año")
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned")
@@ -284,13 +282,12 @@ class levelCurves(models.Model):
 
     estados = [
         ('Pendiente', 'Pendiente'),
-        ('Finalizado', 'Finalizado'),
         ('En proceso', 'En proceso'),
         ('Entregado', 'Entregado'),
         ('Atrasado', 'Atrasado'),
         ('Cancelado', 'Cancelado'),
     ]
-    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudLevel')
+    solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudLevel')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="levelcurves_assigned")
     draw = models.DateField(blank=True, null=True, verbose_name='Dibujo', help_text= "Colocar Fecha dd/mm/año")
     presentation = models.DateField(blank=True, null=True, verbose_name='Presentación', help_text= "Colocar Fecha dd/mm/año")
@@ -319,7 +316,7 @@ class CadastralPlans(models.Model):
         ('Inscrito', 'Inscrito'),
     ]
 
-    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudCadastral')
+    solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudCadastral')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="cadastralplans_assigned")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
     timbres = models.DateField(blank=True, null=True, verbose_name='Timbres comprados', help_text= "Colocar Fecha dd/mm/año")
@@ -335,7 +332,7 @@ class CadastralPlans(models.Model):
 
 #correciones catastro
 class Corrections(models.Model):
-    cadastral_id= models.ForeignKey(CadastralPlans, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Catastro')
+    cadastral_id= models.ForeignKey(CadastralPlans, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Catastro')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="corrections_assigned")
     downloadedMinute = models.DateField(blank=True, null=True, verbose_name='Minuta Descargada', help_text= "Colocar Fecha dd/mm/año") 
     errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores', help_text= "Colocar Fecha dd/mm/año")
@@ -351,7 +348,7 @@ class Corrections(models.Model):
 
 #replanteo 
 class Replant(models.Model):
-    solicitud_id= models.ForeignKey(Solicitudes, on_delete=models.SET_NULL, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
+    solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="replant_assigned")
     armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada', help_text= "Colocar Fecha dd/mm/año")
     files_replant = models.DateField(blank=True, null=True, verbose_name='Archivos de Replanteo', help_text= "Colocar Fecha dd/mm/año") 

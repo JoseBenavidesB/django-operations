@@ -6,52 +6,40 @@
                     <div class="card" style="width: 100%%;">
                         <div class="row">
                             <div class="col">
-                                <img src="{{solicitud.plan.url}}" class="card-img-top center" style="width:30rem" alt="Plano">
+                                <img src="{{solicitud.plan|slice:'-4'}}raw=1" class="card-img-top center" style="width:30rem" alt="Imagen del Plano">
                             </div>
                             <div class="col">
                                 <div class="card-body">
-                                    <h3 class="card-title">ID de Solicitud:[{{solicitud.id}}]|{{ solicitud.name }}</h3>
-                                    <p class="card-text">Cliente: {{ solicitud.customer_id }}.</p>
-                                    <p class="card-text">Contacto en sitio: {{ solicitud.contact }}.</p><hr>
+                                    <h3 class="card-title">ID de Solicitud:[{{solicitud.quote.id}}]|{{ solicitud.name }}</h3>
+                                    <p class="card-text">Cliente: {{ solicitud.quote.final_customer }}.</p>
+                                    <p class="card-text">Contacto en sitio: {{ solicitud.quote.contact }}.</p><hr>
                                     <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
 
-                                        <!--preliminar-->
-                                            <h3 class="card-title">Preliminar</h3>
-                                            <p class="card-text">Asignado a: {{preliminar.assigned_to}}.</p>
-                                            <p class="card-text">Marca Ubicación: {{preliminar.locationMark}}.</p>
-                                            <p class="card-text">Google Maps: {{preliminar.googleMaps}}.</p>
-                                            <p class="card-text">Croquis preliminares: {{preliminar.sketch}}.</p>
-                                            <p class="card-text">Preliminar de Documento: {{preliminar.document}}.</p>
-                                            <p class="card-text">Estado: {{preliminar.status}}.</p><hr>
-                                        
-
-                                        
                                         <!-- third fieldSurvey-->
-                                        {% for element in campo %}
+                                        
                                                         <h3 class="card-title">Levantamiento de Campo</h3>
-                                                        <p class="card-text">Fecha Tentativa: {{element.tentativeDate}}.</p>
-                                                        <p class="card-text">Fecha Propuesta: {{element.proposedDate}}.</p>
-                                                        <p class="card-text">Fecha Lev. Campo: {{element.fieldSurveyDate}}.</p>
-                                                        <p class="card-text">Fecha de conclusión: {{element.conclusionDate}}.</p>
-                                                        <p class="card-text">Datos descargados: {{element.downloadedData}}.</p>
-                                        {% endfor %}
+                                                        <p class="card-text">Fecha Tentativa: {{campo.tentativeDate}}.</p>
+                                                        <p class="card-text">Fecha Propuesta: {{campo.proposedDate}}.</p>
+                                                        <p class="card-text">Fecha Lev. Campo: {{campo.fieldSurveyDate}}.</p>
+                                                        <p class="card-text">Fecha de conclusión: {{campo.conclusionDate}}.</p>
+                                                        <p class="card-text">Datos descargados: {{campo.downloadedData}}.</p>
+                                        
                                     <!-- end fieldSurvey-->
 
                                     <!-- second service-->
                                     
-                                        {% for field in service%}
+                                        {% comment %} {% for field in service%} {% endcomment %}
                                                         <h3 class="card-title">Replanteo</h3>
-                                                        <p class="card-text">Información Armada: {{ field.armedInformation }}.</p>
-                                                        <p class="card-text">Alineamiento de Plano: {{ field.alignedPlan }}.</p>
-                                                        <p class="card-text">Archivos de Replanteo: {{ field.files_replant }}.</p>
-                                                        <p class="card-text">Replanteo de puntos en sitio: {{ field.replantingPoints }}.</p>
-                                                        <p class="card-text">Descarga de fotos: {{ field.downloadedPhotos }}.</p>
-                                                        <p class="card-text">Laminas terminadas: {{ field.sketch }}.</p>
-                                                        <p class="card-text">Documento redactado: {{ field.drafting }}.</p>
-                                                        <p class="card-text">Revisado: {{ field.review }}.</p>
-                                                        <p class="card-text">Reporte enviado el: {{ field.submittedReport }}.</p><hr>
-                                        {% endfor %}
-                                        <!-- end service-->
+                                                        <p class="card-text">Asignado a: {{ service.assigned_to }}.</p>
+                                                        <p class="card-text">Información Armada: {{ service.armed_info }}.</p>
+                                                        <p class="card-text">Archivos de Replanteo: {{ service.files_replant}}.</p>
+                                                        <p class="card-text">Replanteo de Puntos: {{ service.replantingPoints }}.</p>
+                                                        <p class="card-text">Fotos descargadas: {{ service.downloadedPhotos }}.</p><hr>
+                                                        <p class="card-text">Redacción del Documento: {{ service.drafting }}.</p>
+                                                        <p class="card-text">Revisado el: {{ service.review }}.</p>
+                                                        <p class="card-text">Reporte enviado el: {{ service.submittedReport }}.</p>
+                                        {% comment %} {% endfor %} {% endcomment %}
+                                        <!-- end service-->  
                                     
                                 </div>
                             </div>

@@ -18,48 +18,61 @@
                                         <!--preliminar-->
                                             <h3 class="card-title">Preliminar</h3>
                                             <p class="card-text">Asignado a: {{preliminar.assigned_to}}.</p>
-                                            <p class="card-text">Marca Ubicación: {{preliminar.locationMark}}.</p>
-                                            <p class="card-text">Google Maps: {{preliminar.googleMaps}}.</p>
+                                            <p class="card-text">Servicio agendado: {{preliminar.schedule_service}}.</p>
+                                            <p class="card-text">Marca ubicación: {{preliminar.locationMark}}.</p>
+                                            <p class="card-text">Google en el grupo: {{preliminar.google_to_group}}.</p>
+                                            <p class="card-text">Planos descargados: {{preliminar.downloaded_plans}}.</p>
+                                            <p class="card-text">Dibujo de plano: {{preliminar.draw_plans}}.</p>
                                             <p class="card-text">Croquis preliminares: {{preliminar.sketch}}.</p>
-                                            <p class="card-text">Preliminar de Documento: {{preliminar.document}}.</p>
+                                            <p class="card-text">Documento preliminar: {{preliminar.document}}.</p>
                                             <p class="card-text">Estado: {{preliminar.status}}.</p><hr>
                                         
                                         <!-- third fieldSurvey-->
                                         
-                                                        <h3 class="card-title">Levantamiento de Campo</h3>
-                                                        <p class="card-text">Fecha Tentativa: {{campo.tentativeDate}}.</p>
-                                                        <p class="card-text">Fecha Propuesta: {{campo.proposedDate}}.</p>
-                                                        <p class="card-text">Fecha Lev. Campo: {{campo.fieldSurveyDate}}.</p>
-                                                        <p class="card-text">Fecha de conclusión: {{campo.conclusionDate}}.</p>
-                                                        <p class="card-text">Datos descargados: {{campo.downloadedData}}.</p>
-                                        
-                                    <!-- end fieldSurvey-->
+                                            <h3 class="card-title">Levantamiento de Campo</h3>
+                                            <p class="card-text">Asigando a: {{campo.assigned_to}}.</p>
+                                            <p class="card-text">Contactar en sitio: {{campo.contact}}.</p>
+                                            <p class="card-text">Localización: {{campo.solicitud_id.location}}.</p>
+                                            <p class="card-text">Área: {{campo.solicitud_id.area}}.</p>
+                                            <p class="card-text">Fecha propuesta: {{campo.proposedDate}}.</p>
+                                            <p class="card-text">Fecha Lev. de Campo: {{campo.fieldSurveyDate}}.</p>
+                                            <p class="card-text">Uso GNSS: {{campo.gnss_survey}}.</p>
+                                            <p class="card-text">Uso Estación: {{campo.station_survey}}.</p>
+                                            <p class="card-text">Uso Drone: {{campo.fly_drone}}.</p>
+                                            <p class="card-text">Conclusión Lev Campo: {{campo.conclusionDate}}.</p>
+                                            <p class="card-text">Datos Descargados: {{campo.downloadedData}}.</p>
+                                            <p class="card-text">Info. Armada: {{campo.armed_information}}.</p>
+                                            <p class="card-text">Estado: {{campo.status}}.</p>
+                            
+                        <!-- end fieldSurvey-->
 
-                                    <!-- LEVEL CURVES-->
-                                    
-                                        {% comment %} {% for field in service%} {% endcomment %}
-                                                        <h3 class="card-title">Curvas de Nivel</h3>
-                                                        <p class="card-text">Asignado a: {{ service.assigned_to }}.</p>
-                                                        <p class="card-text">Dibujo: {{ service.draw }}.</p>
-                                                        <p class="card-text">Presentación: {{ service.presentation}}.</p>
-                                                        <p class="card-text">Revisión: {{ service.review }}.</p>
-                                                        <p class="card-text">Curvas entregadas el: {{ service.submittedCurves }}.</p>
-                                                        <p class="card-text">Estado: {{ service.status }}.</p><hr>
-                                        {% comment %} {% endfor %} {% endcomment %}
-                                        <!-- end service--> 
+                        <!-- LEVEL CURVES-->
+                        
+                            {% comment %} {% for field in service%} {% endcomment %}
+                                            <h3 class="card-title">Curvas de Nivel</h3>
+                                            <p class="card-text">Asignado a: {{ service.assigned_to }}.</p>
+                                            <p class="card-text">Vuelo procesado: {{ service.process_fly }}.</p>
+                                            <p class="card-text">Dibujo: {{ service.draw }}.</p>
+                                            <p class="card-text">Presentación: {{ service.presentation}}.</p>
+                                            <p class="card-text">Revisión: {{ service.review }}.</p>
+                                            <p class="card-text">Curvas entregadas el: {{ service.submittedCurves }}.</p>
+                                            <p class="card-text">Estado: {{ service.status }}.</p><hr>
+                            {% comment %} {% endfor %} {% endcomment %}
+                            <!-- end service--> 
 
-                                    <!-- REPLANT-->
-                                    
-                                        {% comment %} {% for field in service%} {% endcomment %}
-                                                        <h3 class="card-title">Replanteo</h3>
-                                                        <p class="card-text">Asignado a: {{ service2.assigned_to }}.</p>
-                                                        <p class="card-text">Información Armada: {{ service2.armed_info }}.</p>
-                                                        <p class="card-text">Archivos de Replanteo: {{ service2.files_replant}}.</p>
-                                                        <p class="card-text">Replanteo de Puntos: {{ service2.replantingPoints }}.</p>
-                                                        <p class="card-text">Fotos descargadas: {{ service2.downloadedPhotos }}.</p>
-                                                        <p class="card-text">Redacción del Documento: {{ service2.drafting }}.</p>
-                                                        <p class="card-text">Revisado el: {{ service2.review }}.</p>
-                                                        <p class="card-text">Reporte enviado el: {{ service2.submittedReport }}.</p>
+                        <!-- REPLANT-->
+                        
+                            {% comment %} {% for field in service%} {% endcomment %}
+                                            <h3 class="card-title">Replanteo</h3>
+                                            <p class="card-text">Asignado a: {{ service2.assigned_to }}.</p>
+                                            <p class="card-text">Información Armada: {{ service2.armed_info }}.</p>
+                                            <p class="card-text">Vuelo procesado: {{ service2.process_fly }}.</p>
+                                            <p class="card-text">Archivos de Replanteo: {{ service2.files_replant}}.</p>
+                                            <p class="card-text">Replanteo de Puntos: {{ service2.replantingPoints }}.</p>
+                                            <p class="card-text">Fotos descargadas: {{ service2.downloadedPhotos }}.</p>
+                                            <p class="card-text">Redacción del Documento: {{ service2.drafting }}.</p>
+                                            <p class="card-text">Revisado el: {{ service2.review }}.</p>
+                                            <p class="card-text">Reporte enviado el: {{ service2.submittedReport }}.</p>
                                         {% comment %} {% endfor %} {% endcomment %}
                                         <!-- end service-->                                    
                                 </div>

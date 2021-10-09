@@ -7,12 +7,17 @@
             <tr>
                 <th>Solicitud</th>
                 <th>Asignado a:</th>
+                <th>Contactar en sitio:</th>
                 <th>Localización</th>
                 <th>Área</th>
                 <th>Fecha Propuesta</th>
                 <th>Fecha Lev. de Campo</th>
+                <th>Uso GNSS</th>
+                <th>Uso Estacion</th>
+                <th>Uso Drone</th>
                 <th>Conclusión LevCampo</th>
                 <th>Datos Descargados</th>
+                <th>Info. Armada</th>
                 <th>Estado</th>
                 <th>Editar</th>
 
@@ -24,12 +29,17 @@
                 <tr>
                     <td><a href="{% url 'complete-request' element.solicitud_id.service element.solicitud_id.id %}">{{element.solicitud_id}}</a></td>
                     <td>{{element.assigned_to}}</td>
+                    <td>{{element.contact}}</td>
                     <td>{{element.solicitud_id.location}}</td>
                     <td>{{element.solicitud_id.area}}</td> 
                     <td>{{element.proposedDate}}</td>
                     <td>{{element.fieldSurveyDate}}</td>
+                    <td>{{element.gnss_survey}}</td>
+                    <td>{{element.station_survey}}</td>
+                    <td>{{element.fly_drone}}</td>
                     <td>{{element.conclusionDate}}</td>
                     <td>{{element.downloadedData}}</td>
+                    <td>{{element.armed_information}}</td>
                     <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-survey' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 </tr>

@@ -45,6 +45,10 @@ urlpatterns = [
     path('payment/create-pay', views.PaymentCreateView.as_view(), name='create-pay'),
     path('payment/update-pay/<int:pk>', views.PaymentUpdateView.as_view(), name='update-pay'),
     path('payment/payments', views.PaymentListView.as_view(), name='payments'),
+    path('preliminar/create-preliminary', views.PreliminaryCreateView.as_view(), name='create-preliminary'),
+    path('preliminar/preliminaries', views.PreliminaryListView.as_view(), name='preliminaries'),
+    path('preliminar/update/<int:pk>', views.PreliminaryUpdateView.as_view(), name='edit-preliminary'),
+    
     
     
 

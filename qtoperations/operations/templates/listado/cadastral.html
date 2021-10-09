@@ -6,10 +6,16 @@
         <thead>
             <tr>
                 <th>Servicio</th>
+                <th>Protocolo lleno</th>
+                <th>Protocolo firmado</th>
                 <th>Asignado a</th>
+                <th>Planos dibujados</th>
                 <th>Revisión</th>
                 <th>timbres</th>
+                <th>Datos en APT</th>
                 <th>Subido APT</th>
+                <th>Revisión Minuta</th>
+                <th>Visado</th>
                 <th>Estatus:</th>
                 <th>Editar</th>
             </tr>
@@ -19,10 +25,16 @@
                 {% for element in object_list %}
                 <tr>
                     <td><a href="{% url 'complete-request' element.solicitud_id.service element.solicitud_id.id%} ">{{element.solicitud_id}}</a></td>
+                    <td>{{element.protocolo}}</td>
+                    <td>{{element.signed_protocol}}</td>
                     <td>{{element.assigned_to}}</td>
+                    <td>{{element.draw_plan}}</td>
                     <td>{{element.review}}</td>
                     <td>{{element.timbres}}</td>
+                    <td>{{element.apt}}</td>
                     <td>{{element.uploadedAPT}}</td>
+                    <td>{{element.minute_review}}</td>
+                    <td>{{element.visado}}</td>
                     <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-cadastral' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 </tr>

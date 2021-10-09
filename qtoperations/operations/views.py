@@ -270,6 +270,53 @@ class PaymentListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+#crear PRELIMINARES
+class PreliminaryCreateView(CreateView):
+    model = Preliminary
+    form_class = PreliminaryForm
+    template_name = 'formularios/create-preliminary.html'
+    success_url = reverse_lazy('preliminaries')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Nuevo Registro de Preliminar'
+        context['buttom'] = 'Crear Registro'
+        context['date'] = datetime.date.today()
+        return context
+    
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#LISTAR PRELIMINAR
+class PreliminaryListView(ListView):
+    model = Preliminary
+    template_name = 'listado/preliminares.html'
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+#UPDATE PRELIMINARY
+class PreliminaryUpdateView(UpdateView):
+    model = Preliminary
+    form_class = PreliminaryForm
+    template_name = 'formularios/create-preliminary.html'
+    success_url = reverse_lazy('preliminaries')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Actualizar Registro de Preliminar'
+        context["buttom"] = 'Actualizar Registro'
+        return context
+
+    "to keep secure the view"
+    @method_decorator(login_required(login_url='login'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 #Crear solicitudes
 class SolicitudCreateView(CreateView):
     model=Solicitudes

@@ -1,4 +1,5 @@
 from django.db.models import fields
+from django.db.models.base import Model
 from django.forms import ModelForm
 from .models import *
 
@@ -19,6 +20,10 @@ class QuoteForm(ModelForm):
 class PayForm(ModelForm):
     class Meta:
         model = Payments
+        fields = '__all__'
+class PreliminaryForm(ModelForm):
+    class Meta:
+        model = Preliminary
         fields = '__all__'
 
 class ServicesForm(ModelForm):

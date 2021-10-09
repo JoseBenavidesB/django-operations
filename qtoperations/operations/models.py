@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator
 import datetime
 
+from django.db.models.deletion import DO_NOTHING
+
 
 # Create your models here
 
@@ -108,6 +110,8 @@ class Quotes(models.Model):
     ]
     description = models.CharField(max_length=100, null=True, blank=False, verbose_name="Descripción", help_text="Descripción de la cotización")
     service = models.ForeignKey(Services, on_delete=models.DO_NOTHING, null=True, verbose_name='Servicio')
+    area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
+    location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
     customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente", related_name="quote_customer")
     contact = models.CharField(max_length=50, null=True, blank=True, verbose_name="Contacto", help_text="Escriba el nombre del contacto")
     amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
@@ -154,8 +158,12 @@ class Preliminary(models.Model):
 
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Cotización')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="preliminary_assigned")
+    schedule_service = models.DateField(null=True, blank=True, verbose_name="Servicio agendado")
     locationMark = models.DateField(null=True, blank=True, verbose_name="Marca de Ubicación", help_text= "Colocar Fecha dd/mm/año")
     googleMaps = models.DateField(null=True, blank=True, verbose_name="GoogleMap")
+    google_to_group = models.DateField(null=True, blank=True, verbose_name="Google enviado al Grupo")
+    downloaded_plans = models.DateField(null=True, blank=True, verbose_name="Descarga de Planos")
+    draw_plans = models.DateField(null=True, blank=True, verbose_name="Dibujo de Planos")
     sketch = models.DateField(null=True, blank=True, verbose_name="Croquis Preliminares")
     document = models.DateField(null=True, blank=True, verbose_name="Modificación preliminar del documento")
     status = models.CharField(max_length=15, null=True, verbose_name="Estatus", default='Pendiente', choices=estados)
@@ -163,6 +171,7 @@ class Preliminary(models.Model):
     class Meta:
         verbose_name = 'Preliminar'
         verbose_name_plural = 'Preliminares'
+        ordering = ('-id',)
 
     def __str__(self):
         return f'Preliminar de {self.quote}'
@@ -185,13 +194,14 @@ class Solicitudes(models.Model):
     deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega', help_text= "Colocar Fecha dd/mm/año")
     plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
-    location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
-    area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
+    
+    
     #survey = models.BooleanField(default=True, verbose_name='Necesita Lev Campo?')
     #validators=[MinValueValidator(datetime.date.today)] para validar que la fecha minima
     class Meta:
         verbose_name = 'Solicitud'
         verbose_name_plural = 'Solicitudes'
+
         #event tiene FK a venueob, 
 
     def __str__(self):
@@ -211,9 +221,13 @@ class FieldSurvey(models.Model):
         ('Cancelado', 'Cancelado'),
     ]    
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='solicitudField')
+    contact = models.DateField(null=True, blank=True, verbose_name= "Contactar sitio")
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta', help_text= "Colocar Fecha dd/mm/año")
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo', help_text= "Colocar Fecha dd/mm/año")
+    gnss_survey = models.ForeignKey(Employees, null=True, blank=True, verbose_name='Uso de GNSS', on_delete=DO_NOTHING, related_name='survey_gnss')
+    station_survey = models.ForeignKey(Employees, null=True, blank=True, verbose_name='Uso de estación',on_delete=DO_NOTHING, related_name='survey_station')
+    fly_drone = models.ForeignKey(Employees, null=True, blank=True, verbose_name='Uso de Drone',on_delete=DO_NOTHING, related_name='survey_drone')
     conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión', help_text= "Colocar Fecha dd/mm/año")
     downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos', help_text= "Colocar Fecha dd/mm/año")
     armed_information = models.DateField(blank=True, null=True, verbose_name='Info. armada', help_text= "Colocar Fecha dd/mm/año")
@@ -261,6 +275,7 @@ class Reports(models.Model):
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")
     sketch = models.DateField(null=True, blank=True, verbose_name='Croquis', help_text= "Colocar Fecha dd/mm/año")
+    process_fly = models.DateField(null=True, blank=True, verbose_name='Vuelo procesado', help_text= "Colocar Fecha dd/mm/año")
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned")
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.', help_text= "Colocar Fecha dd/mm/año")
     assigned_2 = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned2")
@@ -289,6 +304,7 @@ class levelCurves(models.Model):
     ]
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudLevel')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="levelcurves_assigned")
+    process_fly = models.DateField(null=True, blank=True, verbose_name='Vuelo procesado', help_text= "Colocar Fecha dd/mm/año")
     draw = models.DateField(blank=True, null=True, verbose_name='Dibujo', help_text= "Colocar Fecha dd/mm/año")
     presentation = models.DateField(blank=True, null=True, verbose_name='Presentación', help_text= "Colocar Fecha dd/mm/año")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
@@ -317,10 +333,17 @@ class CadastralPlans(models.Model):
     ]
 
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudCadastral')
+    protocolo =  models.DateField(blank=True, null=True, verbose_name='Protocolo lleno', help_text= "Colocar Fecha dd/mm/año")
+    signed_protocol =  models.DateField(blank=True, null=True, verbose_name='Protocolo comprado', help_text= "Colocar Fecha dd/mm/año")
+    process_fly = models.DateField(null=True, blank=True, verbose_name='Vuelo procesado', help_text= "Colocar Fecha dd/mm/año")
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="cadastralplans_assigned")
+    draw_plan =  models.DateField(blank=True, null=True, verbose_name='Planos dibujados', help_text= "Colocar Fecha dd/mm/año")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
     timbres = models.DateField(blank=True, null=True, verbose_name='Timbres comprados', help_text= "Colocar Fecha dd/mm/año")
+    apt =  models.DateField(blank=True, null=True, verbose_name='APT lleno', help_text= "Colocar Fecha dd/mm/año")
     uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT', help_text= "Colocar Fecha dd/mm/año")
+    visado =  models.DateField(blank=True, null=True, verbose_name='Visado', help_text= "Colocar Fecha dd/mm/año")
+    minute_review =  models.DateField(blank=True, null=True, verbose_name='Revisión Minuta', help_text= "Colocar Fecha dd/mm/año")
     status = models.CharField(max_length=15, choices=estados, default='Sin Tramitar', verbose_name="Estado")
     #aqui deberia ser, estadus: pendiente, revision, cancelado, rebotado, inscrito
     class Meta:
@@ -351,6 +374,7 @@ class Replant(models.Model):
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="replant_assigned")
     armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada', help_text= "Colocar Fecha dd/mm/año")
+    process_fly = models.DateField(null=True, blank=True, verbose_name='Vuelo procesado', help_text= "Colocar Fecha dd/mm/año")
     files_replant = models.DateField(blank=True, null=True, verbose_name='Archivos de Replanteo', help_text= "Colocar Fecha dd/mm/año") 
     replantingPoints = models.DateField(blank=True, null=True, verbose_name='Rep. Puntos en sitio', help_text= "Colocar Fecha dd/mm/año")
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")

@@ -1,0 +1,44 @@
+{% extends 'layout/listar.html' %}
+
+{% block table %}
+    <h1 class='text-center'>Listado de Preliminares</h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Solicitud</th>
+                <th>Asignado a</th>
+                <th>Servicio agendado</th>
+                <th>Marca de Ubicación</th>
+                <th>Google Maps</th>
+                <th>Google enviado al grupo</th>
+                <th>Planos descargados</th>
+                <th>Planos dibujados</th>
+                <th>Croquis</th>
+                <th>Redacción del Documento Preliminar</th>
+                <th>Estado</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for element in object_list %}
+                <tr>
+                    <td><a href="{% url 'complete-request' element.quote.service element.quote.id %} ">{{element.quote}}</a></td>
+                    <td>{{element.assigned_to}}</td>
+                    <td>{{element.schedule_service}}</td>
+                    <td>{{element.locationMark}}</td>
+                    <td>{{element.googleMaps}}</td>
+                    <td>{{element.google_to_group}}</td>
+                    <td>{{element.downloaded_plans}}</td>
+                    <td>{{element.draw_plans}}</td>
+                    <td>{{element.sketch}}</td>
+                    <td>{{element.document}}</td>
+                    <td>{{element.status}}</td>
+                    <td><a href="{% url 'edit-preliminary' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+            
+
+{% endblock table %}

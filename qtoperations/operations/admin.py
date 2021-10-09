@@ -25,11 +25,11 @@ class PaymentsAdmin(admin.ModelAdmin):
     list_display = ('quote', 'bill1', 'amount_bill1', 'date_bill1','bill2', 'amount_bill2', 'date_bill2')
 admin.site.register(Payments, PaymentsAdmin)
 
-""" class PreliminaryAdmin(admin.ModelAdmin):
+class PreliminaryAdmin(admin.ModelAdmin):
     list_display = ('quote', 'assigned_to', 'locationMark', 'googleMaps', 'sketch', 'document', 'status')
 admin.site.register(Preliminary, PreliminaryAdmin)
 
-admin.site.register(Services) """
+admin.site.register(Services)
 
 """ class SolicitudesAdmin(admin.ModelAdmin):
     list_display = ('quote','deliveryDate','status')

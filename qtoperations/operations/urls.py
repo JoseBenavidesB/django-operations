@@ -1,14 +1,11 @@
 from django.contrib import admin
 from django.urls import path
+from django.urls.conf import include
 from . import views
 
 
 urlpatterns = [
     path('', views.index, name='inicio'),
-    path('empresas/', views.EmpresasListView.as_view(), name='empresas'),
-    path('create-company/', views.EmpresasCreateView.as_view(), name='crear-empresa'),
-    path('customers/', views.CustomerListView.as_view(), name='customers'),
-    path('create-customer/', views.CustomerCreateView.as_view(), name='create-customer'),
     path('services/', views.ServicesListView.as_view(), name='services'),
     path('create-service/', views.ServicesCreateView.as_view(), name='create-service'),
     path('solicitud/', views.SolicitudListView.as_view(), name='solicitud'),
@@ -56,3 +53,8 @@ urlpatterns = [
 
 
 ]
+
+"""     path('empresas/', views.EmpresasListView.as_view(), name='empresas'),
+    path('create-company/', views.EmpresasCreateView.as_view(), name='crear-empresa'),
+    path('customers/', views.CustomerListView.as_view(), name='customers'),
+    path('create-customer/', views.CustomerCreateView.as_view(), name='create-customer'), """

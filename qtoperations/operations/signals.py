@@ -50,4 +50,8 @@ def post_save_create_fieldsurvey(sender, instance, created, **kwargs):
             Replant.objects.create(solicitud_id=instance.quote)
             levelCurves.objects.create(solicitud_id=instance.quote)
             print('SI INCLUTE replanteo y curvas ******************************************')
+        elif(str(instance.quote.service) == 'Informe -- Catastro'):
+            Reports.objects.create(solicitud_id=instance.quote)
+            CadastralPlans.objects.create(solicitud_id=instance.quote)
+            print('SI INCLUTE informe y catastro ******************************************')
 

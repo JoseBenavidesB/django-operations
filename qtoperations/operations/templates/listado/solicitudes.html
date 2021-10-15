@@ -28,9 +28,9 @@
                     <td>{{element.quote.contact}}</td>
                     <td>{{element.deliveryDate}}</td>
                     {% if element.plan|length > 0 %}
-                        <td><a href="{{element.plan|slice:'-4'}}raw=1" target="_blank"> <img src="{{element.plan|slice:'-4'}}raw=1" alt="Imagen de Plano" style="max-height:3rem" ></a></td>
+                        <td><a href="{{element.plan|slice:'-4'}}raw=1" target="_blank"> Ver Plano</a></td>
                         {% else %}
-                        <td><img src="{{element.plan}}" alt="Imagen de Plano" style="max-height:3rem" ></td>
+                        <td>Falta Plano</td>
                     {% endif %}
                     <td>{{element.status}}</td>
                     <td>{{element.quote.area}}</td>

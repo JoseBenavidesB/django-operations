@@ -164,3 +164,6 @@ X_FRAME_OPTIONS= 'SAMEORIGIN'
 
 #for bootstrap form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+#available date forms
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%d/%m/%Y','%d-%m-%y','%d/%m/%y')

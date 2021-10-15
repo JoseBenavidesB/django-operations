@@ -9,9 +9,9 @@ class EmployeesAdmin(admin.ModelAdmin):
     list_display = ('name', 'last_name', 'phone_number', 'ocupation', 'department')
 admin.site.register(Employees, EmployeesAdmin)
 
-class EmpresasAdmin(admin.ModelAdmin):
-    list_display = ('name', 'prefix')
-admin.site.register(Empresas, EmpresasAdmin)
+class Sub_customersAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'company')
+admin.site.register(Sub_customers, Sub_customersAdmin)
 
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('name', 'lastName', 'nacionalidad', 'email', 'phoneNumber')

@@ -2,10 +2,11 @@ from django.db.models import fields
 from django.db.models.base import Model
 from django.forms import ModelForm
 from .models import *
+from django.db import models
 
-class EmpresaForm(ModelForm):
+class SubCustomerForm(ModelForm):
     class Meta:
-        model = Empresas
+        model = Sub_customers
         fields = '__all__'
 
 class CustomerForm(ModelForm):

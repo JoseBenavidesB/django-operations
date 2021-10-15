@@ -19,8 +19,8 @@ def index(request):
 #crear Empresas
 
 class EmpresasCreateView(CreateView):
-    model= Empresas
-    form_class=  EmpresaForm#aqui va el formulario
+    model= Sub_customers
+    form_class=  SubCustomerForm#aqui va el formulario
     template_name= 'formularios/create-companies.html'#aqui donde se va crear el registr
     success_url= reverse_lazy('empresas')#donde se va redigir el contenido
 
@@ -50,7 +50,7 @@ class EmpresasCreateView(CreateView):
 #listar las empresas
 
 class EmpresasListView(ListView):
-    model= Empresas
+    model= Sub_customers
     template_name= 'listado/empresas.html'
 
     #"to keep secure the view"
@@ -60,8 +60,8 @@ class EmpresasListView(ListView):
 
 #actualizar Empresas
 class EmpresaUpdateView(UpdateView):
-    model= Empresas
-    form_class=  EmpresaForm#aqui va el formulario
+    model= Sub_customers
+    form_class=  SubCustomerForm#aqui va el formulario
     template_name= 'formularios/create-companies.html'#aqui donde se va crear el registr
     success_url= reverse_lazy('empresas')#donde se va redigir el contenido
 
@@ -198,6 +198,7 @@ class QuoteCreateView(CreateView):
 class QuoteListView(ListView):
     model = Quotes
     template_name = 'listado/quotes.html'
+    ordering = ['-id']
 
     "to keep secure the view"
     @method_decorator(login_required(login_url='login'))
@@ -699,6 +700,7 @@ def complete_request(request, servicio, id):
     template=''
     service=''
     service2 = ''
+    service3 = ''
     
     if servicio == 'Informe':
         service = Quotes.objects.get(id=id).solicitudReport.all() 
@@ -724,6 +726,10 @@ def complete_request(request, servicio, id):
         service = Quotes.objects.get(id=id).solicitudReport.all()
         service2 = Quotes.objects.get(id=id).solicitudReplant.all()
         template = 'detalles/detail-report-replant.html'
+    elif servicio == 'Informe -- Catastro':
+        service = Quotes.objects.get(id=id).solicitudReport.all()
+        service2 = Quotes.objects.get(id=id).solicitudCadastral.all()
+        template = 'detalles/detail-report-catastro.html'
 
         
     return render(request, template, {'solicitud':solicitud, 'service':service, 'service2':service2, 'campo': campo, 'preliminar':preliminar})

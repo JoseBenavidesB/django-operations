@@ -23,7 +23,7 @@
                 {% if request.user.is_authenticated %}
                     <nav class="barra">
                         <ul class="nav nav-tabs navbar-expand-sm justify-content-center ">
-                            <li class="nav-item dropdown">
+                            {% comment %} <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Clientes
                                 </a>
@@ -32,7 +32,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="nav-link " href="{% url 'customers' %}">Clientes</a>
                                     <div class="dropdown-divider"></div>
-                            </li>
+                            </li> {% endcomment %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'solicitud' %}">Solicitudes en General</a>
                             </li>
@@ -82,10 +82,14 @@
                                     </div>
                                 </li>
                             {% endif %}
+                            {% if request.user|has_group:"administrativo" or request.user|has_group:"staff"%}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
                             </li>
-                            
                         </ul> 
                     </nav>
                          <!--<p class="bienvenido">Bienvenido(a) <strong>{{ user }}</strong>, por favor, selecciona una opción de la barra superior </p>-->

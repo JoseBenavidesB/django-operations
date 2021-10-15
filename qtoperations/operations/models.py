@@ -15,6 +15,7 @@ class Department(models.Model):
     class Meta:
         verbose_name = "Departamento"
         verbose_name_plural = "Departamentos"
+        
 
     def __str__(self):
         return f'{self.name}'
@@ -44,22 +45,10 @@ class Employees(models.Model):
     class Meta:
         verbose_name= 'Empleado'
         verbose_name_plural = 'Empleados'
+        
 
     def __str__(self):
         return f'{self.name}'
-
-#empresas
-class Empresas(models.Model):
-
-    name = models.CharField(max_length=200, verbose_name='Empresa', unique=True)
-    prefix = models.CharField(max_length=10, verbose_name='Prefijo', blank=True, null=True, unique=True)
-
-    class Meta:
-        verbose_name= 'Empresa'
-        verbose_name_plural = 'Empresas'
-
-    def __str__(self):
-        return (self.prefix) #con esto puedo manipular para que se presente SF-0003
 
 #clientes
 class Customers(models.Model):
@@ -79,14 +68,38 @@ class Customers(models.Model):
     district = models.CharField(max_length=30, null=True, blank=True, verbose_name="Distrito")
     phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
-    empresa = models.ForeignKey(Empresas, on_delete=models.DO_NOTHING, null=True)
+    company = models.BooleanField(verbose_name="Es una empresa?", null=True)
 
     class Meta:
         verbose_name='Cliente'
         verbose_name_plural='Clientes'
 
     def __str__(self):
-        return f'{self.name}({self.empresa})'
+        return f'{self.name}'
+
+#empresas
+class Sub_customers(models.Model):
+    nacionalidad = [
+        ('Extranjero', 'Extranjero'),
+        ('Residente', 'Residente'),
+        ('Costarricense', 'Costarricense')
+    ]
+
+    name = models.CharField(max_length=100, verbose_name='Nombre', null=False)
+    lastName = models.CharField(max_length=100, verbose_name='Apellidos', blank=True, null=True)
+    cedula = models.CharField(max_length=30, unique=True, null=True, blank=True, verbose_name="Cédula o pasaporte")
+    nacionalidad = models.CharField(max_length=20, choices=nacionalidad, null=True, blank=False, verbose_name="Nacionalidad")
+    phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
+    email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
+    company = models.ForeignKey(Customers, default=False, null=True, blank=True, on_delete=DO_NOTHING)
+
+    class Meta:
+        verbose_name= 'Sub Cliente'
+        verbose_name_plural = 'Sub Clientes'
+        
+
+    def __str__(self):
+        return f'{self.name}' #con esto puedo manipular para que se presente SF-0003
 
 #servicios
 class Services(models.Model):
@@ -116,23 +129,24 @@ class Quotes(models.Model):
     contact = models.CharField(max_length=50, null=True, blank=True, verbose_name="Contacto", help_text="Escriba el nombre del contacto")
     amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
     amount2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en ¢",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
-    date = models.DateField(auto_now_add=True, verbose_name="Fecha de cotización") 
-    final_customer = models.ForeignKey(Customers, null=True, blank=True, on_delete=models.DO_NOTHING, verbose_name="Cliente Final")
+    date = models.DateField(auto_now_add=True, verbose_name="Cotización creada el") 
+    final_customer = models.ForeignKey(Sub_customers, null=True, blank=True, on_delete=models.DO_NOTHING, verbose_name="En caso de ser Empresa, solicitado por:")
     status = models.CharField(max_length=50, null=True, verbose_name="Estatus", choices=estados)
     
     class Meta:
         verbose_name = 'Cotización'
         verbose_name_plural = 'Cotizaciones'
+        ordering = ['-id']
 
     def __str__(self):
-        return f'[{self.id}]-{self.description}||{self.final_customer}'
+        return f'QT-{self.customer.id}-{self.id}|[{self.description}]'
 
 #pago
 class Payments(models.Model):
     quote = models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, verbose_name="Cotización", related_name="payment_quote")
     bill1 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #1")
     amount_bill1 = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2, verbose_name="Monto en $", help_text="Digite el monto (máximo 2 decimales)")
-    date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura", help_text= "Colocar Fecha mm/dd/año")
+    date_bill1 = models.DateField(null=True, blank=True, verbose_name="Fecha de 1 factura", help_text= "Colocar Fecha dd/mm/año") 
     bill2 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #2")
     amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)s")
     date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura", help_text= "Colocar Fecha dd/mm/año")
@@ -142,6 +156,7 @@ class Payments(models.Model):
     class Meta:
         verbose_name = "Pago"
         verbose_name_plural = "Pagos"
+        ordering = ['-id']
 
     def __str__(self):
         return f'Pago de {self.quote}'
@@ -171,7 +186,7 @@ class Preliminary(models.Model):
     class Meta:
         verbose_name = 'Preliminar'
         verbose_name_plural = 'Preliminares'
-        ordering = ('-id',)
+        ordering = ['-id']
 
     def __str__(self):
         return f'Preliminar de {self.quote}'
@@ -201,6 +216,7 @@ class Solicitudes(models.Model):
     class Meta:
         verbose_name = 'Solicitud'
         verbose_name_plural = 'Solicitudes'
+        ordering = ['-id']
 
         #event tiene FK a venueob, 
 
@@ -222,7 +238,7 @@ class FieldSurvey(models.Model):
     ]    
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='solicitudField')
     contact = models.DateField(null=True, blank=True, verbose_name= "Contactar sitio")
-    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta', help_text= "Colocar Fecha dd/mm/año")
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo', help_text= "Colocar Fecha dd/mm/año")
     gnss_survey = models.ForeignKey(Employees, null=True, blank=True, verbose_name='Uso de GNSS', on_delete=DO_NOTHING, related_name='survey_gnss')
@@ -236,6 +252,7 @@ class FieldSurvey(models.Model):
     class Meta:    
         verbose_name='Levantamiento de Campo'
         verbose_name_plural='Levantamientos de Campo'
+        ordering = ['-id']
 
     def __str__(self):
         return f'Lev Campo {self.solicitud_id}'
@@ -287,6 +304,7 @@ class Reports(models.Model):
     class Meta:    
         verbose_name='Informe'
         verbose_name_plural='Informes'
+        ordering = ['-id']
 
     def __str__(self):
         return f'Informe||{self.solicitud_id}'
@@ -315,6 +333,7 @@ class levelCurves(models.Model):
     class Meta:    
         verbose_name='Curvas de Nivel'
         verbose_name_plural='Curvas de Nivel'
+        ordering = ['-id']
 
     def __str__(self):
         return f'Curvas de Nivel||{self.solicitud_id}'
@@ -349,6 +368,7 @@ class CadastralPlans(models.Model):
     class Meta:
         verbose_name = 'Plano Catastrado'
         verbose_name_plural = 'Planos Catastrados'
+        ordering = ['-id']
 
     def __str__(self):
         return f'PlCt||{self.solicitud_id}'
@@ -365,6 +385,7 @@ class Corrections(models.Model):
     class Meta:
         verbose_name = 'Correción'
         verbose_name_plural = 'Correciones'
+        ordering = ['-id']
 
     def __str__(self):
         return f'Correciones||{self.cadastral_id}'    
@@ -385,6 +406,7 @@ class Replant(models.Model):
     class Meta:
         verbose_name = 'Replanteo'
         verbose_name_plural = 'Replanteos'
+        ordering = ['-id']
     
     def __str__(self):
         return f'Replanteo||{self.solicitud_id}'

@@ -45,6 +45,7 @@
                                             <p class="card-text">Datos Descargados: {{campo.downloadedData}}.</p>
                                             <p class="card-text">Info. Armada: {{campo.armed_information}}.</p>
                                             <p class="card-text">Estado: {{campo.status}}.</p><hr>
+                                        
                                         <!-- end fieldSurvey-->
 
                                         <!-- Informe-->
@@ -72,7 +73,18 @@
                                             <p class="card-text">Redacción del Documento: {{ service2.drafting }}.</p>
                                             <p class="card-text">Revisado el: {{ service2.review }}.</p>
                                             <p class="card-text">Reporte enviado el: {{ service2.submittedReport }}.</p><hr>
-                                        <!-- end service-->                                    
+                                        <!-- end service-->  
+
+                                        <!-- Curvas--> 
+                                            <h3 class="card-title">Curvas de Nivel</h3>
+                                            <p class="card-text">Asignado a: {{ service3.assigned_to }}.</p>
+                                            <p class="card-text">Vuelo procesado: {{ service3.process_fly }}.</p>
+                                            <p class="card-text">Dibujo: {{ service3.draw }}.</p>
+                                            <p class="card-text">Presentación: {{ service3.presentation}}.</p>
+                                            <p class="card-text">Revisión: {{ service3.review }}.</p>
+                                            <p class="card-text">Curvas entregadas el: {{ service3.submittedCurves }}.</p>
+                                            <p class="card-text">Estado: {{ service3.status }}.</p><hr>   
+                                        <!-- Curvas-->                                   
                                 </div>
                             </div>
                         </div>

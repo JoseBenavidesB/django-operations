@@ -18,7 +18,7 @@
                                     <p class="card-text">Contacto en sitio: {{ solicitud.quote.contact }}.</p><hr>
                                     <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
                                         
-                                        <!--preliminar-->
+                                            <!--preliminar-->
                                             <h3 class="card-title">Preliminar</h3>
                                             <p class="card-text">Asignado a: {{preliminar.assigned_to}}.</p>
                                             <p class="card-text">Servicio agendado: {{preliminar.schedule_service}}.</p>
@@ -30,7 +30,7 @@
                                             <p class="card-text">Documento preliminar: {{preliminar.document}}.</p>
                                             <p class="card-text">Estado: {{preliminar.status}}.</p><hr>
                                         
-                                        <!--fieldSurvey-->
+                                            <!--fieldSurvey-->
                                             <h3 class="card-title">Levantamiento de Campo</h3>
                                             <p class="card-text">Asigando a: {{campo.assigned_to}}.</p>
                                             <p class="card-text">Contactar en sitio: {{campo.contact}}.</p>
@@ -45,9 +45,9 @@
                                             <p class="card-text">Datos Descargados: {{campo.downloadedData}}.</p>
                                             <p class="card-text">Info. Armada: {{campo.armed_information}}.</p>
                                             <p class="card-text">Estado: {{campo.status}}.</p><hr>
-                                        <!-- end fieldSurvey-->
+                                            <!-- end fieldSurvey-->
 
-                                        <!-- Informe-->
+                                            <!-- Informe-->
                                             <h3 class="card-title">Informe Catastral</h3>
                                             <p class="card-text">Fotos descargadas: {{ service.downloadedPhotos }}.</p>
                                             <p class="card-text">Croquis: {{ service.sketch }}.</p>
@@ -59,20 +59,34 @@
                                             <p class="card-text">Revisión Final: {{ service.finalReview }}.</p>
                                             <p class="card-text">Reporte enviado el: {{ service.submittedReport }}.</p>
                                             <p class="card-text">Estado: {{ service.status }}.</p><hr>
-                                        <!-- end service--> 
+                                            <!-- end service--> 
 
-                                        <!-- Replanteo--> 
-                                            <h3 class="card-title">Replanteo</h3>
-                                            <p class="card-text">Asignado a: {{ service2.assigned_to }}.</p>
-                                            <p class="card-text">Información Armada: {{ service2.armed_info }}.</p>
+                                            <!-- Catastro-->                            
+                                            <h3 class="card-title">Plano de Catastro</h3>
+                                            <p class="card-text">Protocolo lleno: {{ service2.protocolo }}.</p>
+                                            <p class="card-text">Protocolo firmado: {{ service2.signed_protocol }}.</p>
                                             <p class="card-text">Vuelo procesado: {{ service2.process_fly }}.</p>
-                                            <p class="card-text">Archivos de Replanteo: {{ service2.files_replant}}.</p>
-                                            <p class="card-text">Replanteo de Puntos: {{ service2.replantingPoints }}.</p>
-                                            <p class="card-text">Fotos descargadas: {{ service2.downloadedPhotos }}.</p>
-                                            <p class="card-text">Redacción del Documento: {{ service2.drafting }}.</p>
-                                            <p class="card-text">Revisado el: {{ service2.review }}.</p>
-                                            <p class="card-text">Reporte enviado el: {{ service2.submittedReport }}.</p><hr>
-                                        <!-- end service-->                                    
+                                            <p class="card-text">Asignado a: {{ service2.assigned_to}}.</p>
+                                            <p class="card-text">Planos dibujados: {{ service2.draw_plan }}.</p>
+                                            <p class="card-text">Revisión: {{ service2.review }}.</p>
+                                            <p class="card-text">Timbres comprados: {{ service2.timbres }}.</p>
+                                            <p class="card-text">APT LLeno: {{ service2.apt }}.</p>
+                                            <p class="card-text">Subido al APT: {{ service2.uploadedAPT }}.</p>
+                                            <p class="card-text">Visado: {{ service2.visado }}.</p>
+                                            <p class="card-text">Revisión Minuta: {{ service2.minute_review }}.</p>
+                                            <p class="card-text">Estado: {{ service2.status }}.</p><hr>{% comment %} {% endfor %} {% endcomment %}
+                                            <!-- end service-->     
+
+                                            <!-- Curvas--> 
+                                            <h3 class="card-title">Curvas de Nivel</h3>
+                                            <p class="card-text">Asignado a: {{ service3.assigned_to }}.</p>
+                                            <p class="card-text">Vuelo procesado: {{ service3.process_fly }}.</p>
+                                            <p class="card-text">Dibujo: {{ service3.draw }}.</p>
+                                            <p class="card-text">Presentación: {{ service3.presentation}}.</p>
+                                            <p class="card-text">Revisión: {{ service3.review }}.</p>
+                                            <p class="card-text">Curvas entregadas el: {{ service3.submittedCurves }}.</p>
+                                            <p class="card-text">Estado: {{ service3.status }}.</p><hr>   
+                                            <!-- Curvas-->                             
                                 </div>
                             </div>
                         </div>

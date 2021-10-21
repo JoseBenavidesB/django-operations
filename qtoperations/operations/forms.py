@@ -18,6 +18,7 @@ class QuoteForm(ModelForm):
     class Meta:
         model = Quotes
         fields = '__all__'
+
 class PayForm(ModelForm):
     class Meta:
         model = Payments

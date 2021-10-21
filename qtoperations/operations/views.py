@@ -12,7 +12,7 @@ import datetime
 
 # Create your views here.
 def index(request):
-    contexto = "<h1>Bienvenido, por favor selecciona una opción de la barra superior</h1>"
+    contexto = "Bienvenido, por favor selecciona una opción de la barra superior"
     titulo = 'Inicio'
     return render(request, 'layout/layout.html', {'context':contexto, 'title': titulo})
 
@@ -211,6 +211,8 @@ class QuoteUpdateView(UpdateView):
     form_class = QuoteForm
     template_name = 'formularios/create-quote.html'
     success_url = reverse_lazy('quotes')
+
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -714,25 +716,35 @@ def complete_request(request, servicio, id):
     elif servicio == 'Curvas de Nivel':
         service = Quotes.objects.get(id=id).solicitudLevel.all() 
         template='detalles/detail-level.html' 
-    elif servicio == 'Curvas de Nivel -- Replanteo':
+    elif servicio == 'Curvas de Nivel--Replanteo':
         service = Quotes.objects.get(id=id).solicitudLevel.all()
         service2 = Quotes.objects.get(id=id).solicitudReplant.all()
         template = 'detalles/detail-level-replant.html'
-    elif servicio == 'Informe -- Curvas de Nivel':
+    elif servicio == 'Informe--Curvas de Nivel':
         service = Quotes.objects.get(id=id).solicitudReport.all()
         service2 = Quotes.objects.get(id=id).solicitudLevel.all()
         template = 'detalles/detail-report-level.html'
-    elif servicio == 'Informe -- Replanteo':
+    elif servicio == 'Informe--Replanteo':
         service = Quotes.objects.get(id=id).solicitudReport.all()
         service2 = Quotes.objects.get(id=id).solicitudReplant.all()
         template = 'detalles/detail-report-replant.html'
-    elif servicio == 'Informe -- Catastro':
+    elif servicio == 'Informe--Catastro':
         service = Quotes.objects.get(id=id).solicitudReport.all()
         service2 = Quotes.objects.get(id=id).solicitudCadastral.all()
         template = 'detalles/detail-report-catastro.html'
+    elif servicio == 'Informe--Catastro--Curvas de Nivel':
+        service = Quotes.objects.get(id=id).solicitudReport.all()
+        service2 = Quotes.objects.get(id=id).solicitudCadastral.all()
+        service3 = Quotes.objects.get(id=id).solicitudLevel.all()
+        template = 'detalles/detail-report-catastro-curves.html'
+    elif servicio == 'Informe--Replanteo--Curvas de Nivel':
+        service = Quotes.objects.get(id=id).solicitudReport.all()
+        service2 = Quotes.objects.get(id=id).solicitudReplant.all()
+        service3 = Quotes.objects.get(id=id).solicitudLevel.all()
+        template = 'detalles/detail-report-replant-curves.html'
 
         
-    return render(request, template, {'solicitud':solicitud, 'service':service, 'service2':service2, 'campo': campo, 'preliminar':preliminar})
+    return render(request, template, {'solicitud':solicitud, 'service':service, 'service2':service2, 'service3':service3, 'campo': campo, 'preliminar':preliminar})
 
 #puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
 #se debe filtrar id.informe = id.

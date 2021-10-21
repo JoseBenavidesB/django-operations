@@ -2,13 +2,14 @@ from django.db import models
 from django.core.validators import MinValueValidator
 import datetime
 
+from django.contrib.auth.models import Group
 from django.db.models.deletion import DO_NOTHING
 
 
 # Create your models here
 
 #DEPARTAMENTOS
-class Department(models.Model):
+""" class Department(models.Model):
 
     name = models.CharField(max_length=50, null=True, blank=False, verbose_name="Departamento:", unique=True, help_text="Escriba el nombre del departamento")
     
@@ -18,7 +19,7 @@ class Department(models.Model):
         
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name}' """
 
 #ocupaciones
 class Ocupations(models.Model):
@@ -26,8 +27,8 @@ class Ocupations(models.Model):
     name = models.CharField(max_length=50, null=True, blank=False, unique=True, verbose_name="Nombre de Ocupación", help_text="Escriba el nombre de la ocupación")
 
     class Meta:
-        verbose_name='Ocupación'
-        verbose_name_plural = 'Ocupaciones'
+        verbose_name='Ocupación en QT'
+        verbose_name_plural = 'Ocupaciones QT'
 
     def __str__(self):
         return self.name
@@ -37,14 +38,14 @@ class Employees(models.Model):
 
     name= models.CharField(max_length=25, verbose_name='Nombre', blank=False, null=False)
     last_name = models.CharField(max_length=50, verbose_name='Apellidos', blank=True, null=True)
-    email = models.EmailField(max_length=250, unique=True)
+    email = models.EmailField(max_length=250, blank=True, null=True)
     phone_number = models.CharField(max_length=20, verbose_name='Telefono', blank=True, null=False)
     ocupation = models.ForeignKey(Ocupations, on_delete=models.DO_NOTHING, verbose_name='Ocupación', null=True)
-    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True, verbose_name="Departamento")
+    department = models.ForeignKey(Group, on_delete=models.DO_NOTHING, null=True, verbose_name="Departamento")
 
     class Meta:
-        verbose_name= 'Empleado'
-        verbose_name_plural = 'Empleados'
+        verbose_name= 'Colaborador en QT'
+        verbose_name_plural = 'Colaboradores QT'
         
 
     def __str__(self):
@@ -54,12 +55,10 @@ class Employees(models.Model):
 class Customers(models.Model):
     nacionalidad = [
         ('Extranjero', 'Extranjero'),
-        ('Residente', 'Residente'),
         ('Costarricense', 'Costarricense')
     ]
 
-    name = models.CharField(max_length=100, verbose_name='Nombre', null=False)
-    lastName = models.CharField(max_length=100, verbose_name='Apellidos', blank=True, null=True)
+    name = models.CharField(max_length=200, verbose_name='Nombre', null=False)
     cedula = models.CharField(max_length=30, unique=True, null=True, blank=True, verbose_name="Cédula o pasaporte")
     nacionalidad = models.CharField(max_length=20, choices=nacionalidad, null=True, blank=False, verbose_name="Nacionalidad")
     direction = models.CharField(max_length=250, null=True, blank=True, verbose_name="Dirección")
@@ -67,12 +66,13 @@ class Customers(models.Model):
     canton = models.CharField(max_length=30, null=True, blank=True, verbose_name="Cantón")
     district = models.CharField(max_length=30, null=True, blank=True, verbose_name="Distrito")
     phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
-    email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
+    mobileNumber = models.CharField(max_length=40, verbose_name='Numero Celular', blank=True, null=True)
+    email = models.EmailField(max_length=250, blank=True, null=True)
     company = models.BooleanField(verbose_name="Es una empresa?", null=True)
 
     class Meta:
-        verbose_name='Cliente'
-        verbose_name_plural='Clientes'
+        verbose_name='Cliente / Empresa'
+        verbose_name_plural='Clientes / Empresas'
 
     def __str__(self):
         return f'{self.name}'
@@ -85,17 +85,17 @@ class Sub_customers(models.Model):
         ('Costarricense', 'Costarricense')
     ]
 
-    name = models.CharField(max_length=100, verbose_name='Nombre', null=False)
-    lastName = models.CharField(max_length=100, verbose_name='Apellidos', blank=True, null=True)
+    name = models.CharField(max_length=200, verbose_name='Nombre', null=False)
     cedula = models.CharField(max_length=30, unique=True, null=True, blank=True, verbose_name="Cédula o pasaporte")
     nacionalidad = models.CharField(max_length=20, choices=nacionalidad, null=True, blank=False, verbose_name="Nacionalidad")
     phoneNumber = models.CharField(max_length=40, verbose_name='Numero telefonico', blank=True, null=True)
-    email = models.EmailField(max_length=250, blank=True, null=True, unique=True)
-    company = models.ForeignKey(Customers, default=False, null=True, blank=True, on_delete=DO_NOTHING)
+    mobileNumber = models.CharField(max_length=40, verbose_name='Numero Celular', blank=True, null=True)
+    email = models.EmailField(max_length=250, blank=True, null=True)
+    company = models.ForeignKey(Customers, default=False, null=True, blank=True, on_delete=DO_NOTHING, verbose_name="Empresa")
 
     class Meta:
-        verbose_name= 'Sub Cliente'
-        verbose_name_plural = 'Sub Clientes'
+        verbose_name= 'Colaborador de Empresa'
+        verbose_name_plural = 'Colaboradores de Empresas'
         
 
     def __str__(self):

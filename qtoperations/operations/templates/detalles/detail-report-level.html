@@ -30,8 +30,7 @@
                                             <p class="card-text">Documento preliminar: {{preliminar.document}}.</p>
                                             <p class="card-text">Estado: {{preliminar.status}}.</p><hr>
                                         
-                                        <!-- third fieldSurvey-->
-                                        
+                                        <!-- fieldSurvey-->
                                             <h3 class="card-title">Levantamiento de Campo</h3>
                                             <p class="card-text">Asigando a: {{campo.assigned_to}}.</p>
                                             <p class="card-text">Contactar en sitio: {{campo.contact}}.</p>
@@ -45,13 +44,10 @@
                                             <p class="card-text">Conclusión Lev Campo: {{campo.conclusionDate}}.</p>
                                             <p class="card-text">Datos Descargados: {{campo.downloadedData}}.</p>
                                             <p class="card-text">Info. Armada: {{campo.armed_information}}.</p>
-                                            <p class="card-text">Estado: {{campo.status}}.</p>
-                            
-                        <!-- end fieldSurvey-->
+                                            <p class="card-text">Estado: {{campo.status}}.</p><hr>
+                                        <!-- end fieldSurvey-->
 
-                        <!-- Informe-->
-                        
-                            {% comment %} {% for field in service%} {% endcomment %}
+                                         <!-- Informe-->
                                             <h3 class="card-title">Informe Catastral</h3>
                                             <p class="card-text">Fotos descargadas: {{ service.downloadedPhotos }}.</p>
                                             <p class="card-text">Croquis: {{ service.sketch }}.</p>
@@ -63,12 +59,9 @@
                                             <p class="card-text">Revisión Final: {{ service.finalReview }}.</p>
                                             <p class="card-text">Reporte enviado el: {{ service.submittedReport }}.</p>
                                             <p class="card-text">Estado: {{ service.status }}.</p><hr>
-                            {% comment %} {% endfor %} {% endcomment %}
-                            <!-- end service--> 
+                                        <!-- end service--> 
 
-                        <!-- Curvas de nivel-->
-                        
-                            {% comment %} {% for field in service%} {% endcomment %}
+                                        <!-- Curvas de nivel-->
                                             <h3 class="card-title">Curvas de Nivel</h3>
                                             <p class="card-text">Asignado a: {{ service2.assigned_to }}.</p>
                                             <p class="card-text">Vuelo procesado: {{ service2.process_fly }}.</p>
@@ -76,7 +69,7 @@
                                             <p class="card-text">Presentación: {{ service2.presentation}}.</p>
                                             <p class="card-text">Revisión: {{ service2.review }}.</p>
                                             <p class="card-text">Curvas entregadas el: {{ service2.submittedCurves }}.</p>
-                                            <p class="card-text">Estado: {{ service2.status }}.</p>{% comment %} {% endfor %} {% endcomment %}
+                                            <p class="card-text">Estado: {{ service2.status }}.</p><hr>
                                         <!-- end service-->                                    
                                 </div>
                             </div>

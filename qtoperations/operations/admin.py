@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-admin.site.register(Department)
+#admin.site.register(Department)
 admin.site.register(Ocupations)
 
 class EmployeesAdmin(admin.ModelAdmin):
@@ -14,20 +14,20 @@ class Sub_customersAdmin(admin.ModelAdmin):
 admin.site.register(Sub_customers, Sub_customersAdmin)
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'lastName', 'nacionalidad', 'email', 'phoneNumber')
+    list_display = ('id','name', 'nacionalidad', 'email', 'phoneNumber')
 admin.site.register(Customers, CustomerAdmin)
 
 class QuotesAdmin(admin.ModelAdmin):
     list_display = ('id','description', 'customer', 'amount','status','date')
 admin.site.register(Quotes, QuotesAdmin)
 
-class PaymentsAdmin(admin.ModelAdmin):
+""" class PaymentsAdmin(admin.ModelAdmin):
     list_display = ('quote', 'bill1', 'amount_bill1', 'date_bill1','bill2', 'amount_bill2', 'date_bill2')
-admin.site.register(Payments, PaymentsAdmin)
+admin.site.register(Payments, PaymentsAdmin) """
 
-class PreliminaryAdmin(admin.ModelAdmin):
+""" class PreliminaryAdmin(admin.ModelAdmin):
     list_display = ('quote', 'assigned_to', 'locationMark', 'googleMaps', 'sketch', 'document', 'status')
-admin.site.register(Preliminary, PreliminaryAdmin)
+admin.site.register(Preliminary, PreliminaryAdmin) """
 
 admin.site.register(Services)
 

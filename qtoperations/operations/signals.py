@@ -28,30 +28,40 @@ def post_save_create_fieldsurvey(sender, instance, created, **kwargs):
 
         if(str(instance.quote.service) == 'Replanteo'):
             Replant.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUYE REPLANTEO ****************************************')
+            #print('SI INCLUYE REPLANTEO ****************************************')
         elif(str(instance.quote.service) == 'Plano Catastrado'):
             CadastralPlans.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUYE PLANO DE CATASTRO *********************************')
+            
         elif(str(instance.quote.service) == 'Curvas de Nivel'):
             levelCurves.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUYE CURVAS DE NIVEL **************************************')
+            
         elif(str(instance.quote.service) == 'Informe'):
             Reports.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUTE INFORME ******************************************')
-        elif(str(instance.quote.service) == 'Informe -- Replanteo'):
+            
+        elif(str(instance.quote.service) == 'Informe--Replanteo'):
             Reports.objects.create(solicitud_id=instance.quote)
             Replant.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUTE INFORME y replanteo ******************************************')
-        elif(str(instance.quote.service) == 'Informe -- Curvas de Nivel'):
+            
+        elif(str(instance.quote.service) == 'Informe--Curvas de Nivel'):
             Reports.objects.create(solicitud_id=instance.quote)
             levelCurves.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUTE INFORME y curvas ******************************************')
-        elif(str(instance.quote.service) == 'Curvas de Nivel -- Replanteo'):
+            
+        elif(str(instance.quote.service) == 'Curvas de Nivel--Replanteo'):
             Replant.objects.create(solicitud_id=instance.quote)
             levelCurves.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUTE replanteo y curvas ******************************************')
-        elif(str(instance.quote.service) == 'Informe -- Catastro'):
+            
+        elif(str(instance.quote.service) == 'Informe--Catastro'):
             Reports.objects.create(solicitud_id=instance.quote)
             CadastralPlans.objects.create(solicitud_id=instance.quote)
-            print('SI INCLUTE informe y catastro ******************************************')
+            
+        elif(str(instance.quote.service) == 'Informe--Catastro--Curvas de Nivel'):
+            Reports.objects.create(solicitud_id=instance.quote)
+            CadastralPlans.objects.create(solicitud_id=instance.quote)
+            levelCurves.objects.create(solicitud_id=instance.quote)
+        
+        elif(str(instance.quote.service) == 'Informe--Replanteo--Curvas de Nivel'):
+            Reports.objects.create(solicitud_id=instance.quote)
+            Replant.objects.create(solicitud_id=instance.quote)
+            levelCurves.objects.create(solicitud_id=instance.quote)
+            
 

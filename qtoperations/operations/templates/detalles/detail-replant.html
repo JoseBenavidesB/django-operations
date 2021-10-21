@@ -45,7 +45,7 @@
                                                         <p class="card-text">Conclusión Lev Campo: {{campo.conclusionDate}}.</p>
                                                         <p class="card-text">Datos Descargados: {{campo.downloadedData}}.</p>
                                                         <p class="card-text">Info. Armada: {{campo.armed_information}}.</p>
-                                                        <p class="card-text">Estado: {{campo.status}}.</p>
+                                                        <p class="card-text">Estado: {{campo.status}}.</p><hr>
                                     <!-- second service-->
                                     
                                         {% comment %} {% for field in service%} {% endcomment %}
@@ -55,10 +55,10 @@
                                                         <p class="card-text">Vuelo procesado: {{ service.process_fly }}.</p>
                                                         <p class="card-text">Archivos de Replanteo: {{ service.files_replant}}.</p>
                                                         <p class="card-text">Replanteo de Puntos: {{ service.replantingPoints }}.</p>
-                                                        <p class="card-text">Fotos descargadas: {{ service.downloadedPhotos }}.</p><hr>
+                                                        <p class="card-text">Fotos descargadas: {{ service.downloadedPhotos }}.</p>
                                                         <p class="card-text">Redacción del Documento: {{ service.drafting }}.</p>
                                                         <p class="card-text">Revisado el: {{ service.review }}.</p>
-                                                        <p class="card-text">Reporte enviado el: {{ service.submittedReport }}.</p>
+                                                        <p class="card-text">Reporte enviado el: {{ service.submittedReport }}.</p><hr>
                                         {% comment %} {% endfor %} {% endcomment %}
                                         <!-- end service-->  
                                     

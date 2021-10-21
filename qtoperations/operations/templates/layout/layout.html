@@ -63,9 +63,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{% url 'quotes' %}">Cotizaciones</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Empty</a>
-                                        <div class="dropdown-divider"></div>
+                    
                                     </div>
                                 </li>
                             {% endif %}
@@ -76,15 +74,13 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{% url 'payments' %}">Pagos</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Empty</a>
-                                        <div class="dropdown-divider"></div>
+                                        
                                     </div>
                                 </li>
                             {% endif %}
                             {% if request.user|has_group:"administrativo" or request.user|has_group:"staff"%}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a>
+                                    <a class="nav-link" target="_blank" href="{% url 'admin:index' %}">Admin Panel</a>
                                 </li>
                             {% endif %}
                             <li class="nav-item">
@@ -92,6 +88,7 @@
                             </li>
                         </ul> 
                     </nav>
+                        
                          <!--<p class="bienvenido">Bienvenido(a) <strong>{{ user }}</strong>, por favor, selecciona una opción de la barra superior </p>-->
                         
                     {% else %}
@@ -101,8 +98,10 @@
 
 
                 {% block content %}
-                    
-                
+                      {% if request.user.is_authenticated  %}
+                            <h1>Bienvenido(a) <strong>{{request.user}}</strong>, por favor selecciona una opción de arriba</h1>    
+                      {% endif %}
+                        
                 {% endblock %}
 
                 <footer class="container bottom">

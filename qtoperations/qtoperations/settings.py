@@ -167,3 +167,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #available date forms
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%d/%m/%Y','%d-%m-%y','%d/%m/%y')
+
+#email
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'qtopotest@gmail.com'
+EMAIL_HOST_PASSWORD = 'QtoPo2017'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from django.contrib.auth import views as auth_views
 from . import views
 
 
@@ -45,6 +46,15 @@ urlpatterns = [
     path('preliminar/create-preliminary', views.PreliminaryCreateView.as_view(), name='create-preliminary'),
     path('preliminar/preliminaries', views.PreliminaryListView.as_view(), name='preliminaries'),
     path('preliminar/update/<int:pk>', views.PreliminaryUpdateView.as_view(), name='edit-preliminary'),
+
+
+    #reset password
+    path('reset_password/', auth_views.PasswordResetView.as_view(), name='reset_password'),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset_password_complete/', 
+    auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_done.html'), 
+    name='password_reset_complete'),
     
     
     

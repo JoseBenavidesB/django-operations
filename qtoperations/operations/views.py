@@ -742,9 +742,10 @@ def complete_request(request, servicio, id):
         service2 = Quotes.objects.get(id=id).solicitudReplant.all()
         service3 = Quotes.objects.get(id=id).solicitudLevel.all()
         template = 'detalles/detail-report-replant-curves.html'
-
-        
+ 
     return render(request, template, {'solicitud':solicitud, 'service':service, 'service2':service2, 'service3':service3, 'campo': campo, 'preliminar':preliminar})
+
+
 
 #puedo usar una vista donde se agrega al context de los modelos Informes, Catastro, Reporte, Replanteo, Lev Campo y Solicitudes
 #se debe filtrar id.informe = id.

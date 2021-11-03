@@ -36,7 +36,7 @@ class ServicesForm(ModelForm):
 class SolicitudForm(ModelForm):
     class Meta:
         model = Solicitudes
-        fields = 'quote', 'deliveryDate', 'plan', 'status'
+        fields = '__all__'
 
 class SurveyForm(ModelForm):
     class Meta:

@@ -30,11 +30,12 @@
     <script type="text/javascript" src="{% static 'lib/DataTables/Responsive/js/responsive.bootstrap4.min.js' %}"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.css"/>
-    
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script>
-
+    <script type="text/javascript" src="{% static 'lib/DataTables/pdfmake.min.js' %}"></script>
+    {% comment %} <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'lib/DataTables/vfs_fonts.js' %}"></script>
+    {% comment %} <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/r-2.2.9/datatables.min.js"></script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js' %}"></script>
     
 {% endblock header %}
 
@@ -77,13 +78,16 @@
     <script type="application/javascript">
         $(document).ready(function() {
             $('#example').DataTable( {
-                dom: 'Bfrtip',
+                dom: 'lBfrtip',
                 buttons: [
                     {extend: 'copy', text: 'Copiar'},
                      'csv', 'excel', 'pdf', 'print'
                 ],
                 responsive: true,
-                order:[]
+                order:[],
+                language: {
+            "url": "{% static 'lib/DataTables/DataTables/idioma.txt' %}"
+            }
                 
             } );
         } );

@@ -7,18 +7,22 @@ admin.site.register(Ocupations)
 
 class EmployeesAdmin(admin.ModelAdmin):
     list_display = ('name', 'last_name', 'phone_number', 'ocupation', 'department')
+    ordering = ['id']
 admin.site.register(Employees, EmployeesAdmin)
 
 class Sub_customersAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'company')
+    ordering = ['id']
 admin.site.register(Sub_customers, Sub_customersAdmin)
 
 class CustomerAdmin(admin.ModelAdmin):
+    ordering = ['id']
     list_display = ('id','name', 'nacionalidad', 'email', 'phoneNumber')
 admin.site.register(Customers, CustomerAdmin)
 
 class QuotesAdmin(admin.ModelAdmin):
-    list_display = ('id','description', 'customer', 'amount','status','date')
+    list_display = ('description', 'customer', 'amount','status','delivery_date')
+    ordering = ['id']
 admin.site.register(Quotes, QuotesAdmin)
 
 """ class PaymentsAdmin(admin.ModelAdmin):

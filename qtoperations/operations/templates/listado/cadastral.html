@@ -16,6 +16,7 @@
                 <th>Subido APT</th>
                 <th>Revisión Minuta</th>
                 <th>Visado</th>
+                <th>Comentario</th>
                 <th>Estatus:</th>
                 <th>Editar</th>
             </tr>
@@ -35,6 +36,7 @@
                     <td>{{element.uploadedAPT}}</td>
                     <td>{{element.minute_review}}</td>
                     <td>{{element.visado}}</td>
+                    <td>{{element.note}}</td>
                     <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-cadastral' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 </tr>

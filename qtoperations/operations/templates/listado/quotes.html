@@ -8,12 +8,22 @@
                 <th>ID</th>
                 <th>Descripción</th>
                 <th>Servicio</th>
+                <th>Plano</th>
+                <th>Finca</th>
+                <th>Área</th>
+                <th>Localizado en:</th>
                 <th>Cliente</th>
                 <th>Contacto</th>
+                <th>Fecha de solicitud</th>
+                <th>Cotización enviada el:</th>
                 <th>Monto $</th>
                 <th>Monto ¢</th>
-                <th>Fecha de Cotización</th>
+                <th>Fecha de aprobación o rechazo</th>
                 <th>Solicitado por:</th>
+                <th>Entrega preliminar</th>
+                <th>Revisión interna</th>
+                <th>Fecha de entrega</th>
+                <th>Comentario</th>
                 <th>Estado</th>
                 <th>Editar</th>
             </tr>
@@ -25,12 +35,22 @@
                     <td>{{element.id}}</td>
                     <td>{{element.description}}</td>
                     <td>{{element.service}}</td>
+                    <td>{{element.plan}}</td>
+                    <td>{{element.finca}}</td>
+                    <td>{{element.area}}</td>
+                    <td>{{element.location}}</td>
                     <td>{{element.customer}}</td>
                     <td>{{element.contact}}</td>
+                    <td>{{element.date_request}}</td>
+                    <td>{{element.date_send}}</td>
                     <td>{{element.amount}}</td>
                     <td>{{element.amount2}}</td>
-                    <td>{{element.date}}</td>
+                    <td>{{element.date_answer}}</td>
                     <td>{{element.final_customer}}</td>
+                    <td>{{element.preliminary_date}}</td>
+                    <td>{{element.internal_review}}</td>
+                    <td>{{element.delivery_date}}</td>
+                    <td>{{element.note}}</td>
                     <td>{{element.status}}</td>
                     <td><a href="{% url 'edit-quotes' element.id %}"><i class="fas fa-edit fa-lg justify-content-center"></i> </td> </a>
                 {% endfor %}

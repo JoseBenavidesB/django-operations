@@ -123,14 +123,22 @@ class Quotes(models.Model):
     ]
     description = models.CharField(max_length=100, null=True, blank=False, verbose_name="Descripción", help_text="Descripción de la cotización")
     service = models.ForeignKey(Services, on_delete=models.DO_NOTHING, null=True, verbose_name='Servicio')
-    area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área", blank=True, null=True)
+    plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
+    finca = models.CharField(max_length=100, null=True, blank=False, verbose_name="Número de Finca", help_text="Número de folio real")
+    area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área del proyecto", blank=True, null=True)
     location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
     customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente", related_name="quote_customer")
     contact = models.CharField(max_length=50, null=True, blank=True, verbose_name="Contacto", help_text="Escriba el nombre del contacto")
+    date_request = models.DateField(null=True, blank=True, verbose_name="Fecha de solicitud", help_text= "Colocar Fecha dd/mm/año")
+    date_send = models.DateField(null=True, blank=True, verbose_name="Cotización enviada el:", help_text= "Colocar Fecha dd/mm/año")
     amount = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
     amount2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en ¢",blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)")
-    date = models.DateField(auto_now_add=True, verbose_name="Cotización creada el") 
+    date_answer = models.DateField(null=True, blank=True, verbose_name="Fecha de aprobación o rechazo:", help_text= "Colocar Fecha dd/mm/año")
     final_customer = models.ForeignKey(Sub_customers, null=True, blank=True, on_delete=models.DO_NOTHING, verbose_name="En caso de ser Empresa, solicitado por:")
+    preliminary_date = models.DateField(null=True, blank=True, verbose_name="Fecha preliminar:", help_text= "Colocar Fecha dd/mm/año")
+    internal_review = models.DateField(null=True, blank=True, verbose_name="Revisión interna:", help_text= "Colocar Fecha dd/mm/año")
+    delivery_date = models.DateField(null=True, blank=True, verbose_name="Fecha de entrega:", help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=50, null=True, verbose_name="Estatus", choices=estados)
     
     class Meta:
@@ -150,7 +158,7 @@ class Payments(models.Model):
     bill2 = models.CharField(max_length= 20, null=True, blank=True, verbose_name="Número de factura #2")
     amount_bill2 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name="Monto en $", blank=True, null=True, help_text="Digite el monto (máximo 2 decimales)s")
     date_bill2 = models.DateField(null=True, blank=True, verbose_name="Fecha de 2 factura", help_text= "Colocar Fecha dd/mm/año")
-    note = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
    
     "nombre, identidicacion, correo, direccion, provincia, distrito, canton, cotizacion, precio, fecha cotizacion, costo, factura, numero de factura, fecha, monto, deposito, "
     class Meta:
@@ -181,6 +189,7 @@ class Preliminary(models.Model):
     draw_plans = models.DateField(null=True, blank=True, verbose_name="Dibujo de Planos")
     sketch = models.DateField(null=True, blank=True, verbose_name="Croquis Preliminares")
     document = models.DateField(null=True, blank=True, verbose_name="Modificación preliminar del documento")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, null=True, verbose_name="Estatus", default='Pendiente', choices=estados)
 
     class Meta:
@@ -206,8 +215,9 @@ class Solicitudes(models.Model):
     #customer_id = models.ForeignKey(Customers, on_delete= models.SET_NULL, null=True, verbose_name='Cliente')
     #service_id = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, verbose_name='Servicio')
     #contact = models.CharField(max_length=50, verbose_name='Contacto', null=True, blank=True)
-    deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega', help_text= "Colocar Fecha dd/mm/año")
-    plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
+    #deliveryDate = models.DateField(blank=True, null=True ,verbose_name='Fecha Entrega', help_text= "Colocar Fecha dd/mm/año")
+    #plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, choices=estados,default='Pendiente', verbose_name="Estado")
     
     
@@ -238,7 +248,7 @@ class FieldSurvey(models.Model):
     ]    
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='solicitudField')
     contact = models.DateField(null=True, blank=True, verbose_name= "Contactar sitio")
-    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name="Asignado a:", related_name="fieldsurvey_assigned")
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name="Asignacion General a:", related_name="fieldsurvey_assigned")
     proposedDate = models.DateField(blank=True, null=True, verbose_name='Fecha Propuesta', help_text= "Colocar Fecha dd/mm/año")
     fieldSurveyDate = models.DateField(blank=True, null=True, verbose_name='Fecha Lev. Campo', help_text= "Colocar Fecha dd/mm/año")
     gnss_survey = models.ForeignKey(Employees, null=True, blank=True, verbose_name='Uso de GNSS', on_delete=DO_NOTHING, related_name='survey_gnss')
@@ -247,6 +257,7 @@ class FieldSurvey(models.Model):
     conclusionDate = models.DateField(blank=True, null=True, verbose_name='Fecha de Conclusión', help_text= "Colocar Fecha dd/mm/año")
     downloadedData = models.DateField(blank=True, null=True, verbose_name='Fecha Descarga Datos', help_text= "Colocar Fecha dd/mm/año")
     armed_information = models.DateField(blank=True, null=True, verbose_name='Info. armada', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, choices=estados, default='Pendiente', verbose_name='Estado')
 
     class Meta:    
@@ -258,7 +269,7 @@ class FieldSurvey(models.Model):
         return f'Lev Campo {self.solicitud_id}'
 
 #DIBUJO la idea es meter el dibujo a cada servicio en la tabla donde la solicitud sea igual tanto para dibujo como levCampo, informe, catastro
-class Draw(models.Model):
+""" class Draw(models.Model):
     estados= {
         ('sin_concluir', 'Sin concluir'),
         ('finalizado', 'Finalizado' )
@@ -277,7 +288,7 @@ class Draw(models.Model):
         verbose_name_plural = 'Dibujos'
     
     def __str__(self):
-        return f'Dibujo|| {self.solicitud}'
+        return f'Dibujo|| {self.solicitud}' """
 
 
 #informes
@@ -291,14 +302,15 @@ class Reports(models.Model):
     ]
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReport')
     downloadedPhotos = models.DateField(blank=True, null=True, verbose_name='Fotos descargadas', help_text= "Colocar Fecha dd/mm/año")
+    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Croquis asignado a:", related_name="reports_assigned")
     sketch = models.DateField(null=True, blank=True, verbose_name='Croquis', help_text= "Colocar Fecha dd/mm/año")
     process_fly = models.DateField(null=True, blank=True, verbose_name='Vuelo procesado', help_text= "Colocar Fecha dd/mm/año")
-    assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned")
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.', help_text= "Colocar Fecha dd/mm/año")
-    assigned_2 = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="reports_assigned2")
+    assigned_2 = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Redacción asignado a:", related_name="reports_assigned2")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
     finalReview = models.DateField(blank=True, null=True, verbose_name='Revisón Final', help_text= "Colocar Fecha dd/mm/año")
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte enviado el:', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, choices=estados, default='En Proceso', verbose_name='Estado')
 
     class Meta:    
@@ -327,6 +339,7 @@ class levelCurves(models.Model):
     presentation = models.DateField(blank=True, null=True, verbose_name='Presentación', help_text= "Colocar Fecha dd/mm/año")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
     submittedCurves = models.DateField(blank=True, null=True, verbose_name='Curvas entregadas el:', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, choices=estados, default='En Proceso', verbose_name='Estado')
 
 
@@ -343,7 +356,7 @@ class levelCurves(models.Model):
 class CadastralPlans(models.Model):
     estados = [
         ('Sin Tramitar', 'Sin Tramitar'),
-        ('Subido', 'Subido al APT'),
+        ('Subido al APT', 'Subido al APT'),
         ('Rechazado', 'Rechazado'),
         ('Cancelado', 'Cancelado'),
         ('Apelación', 'Apelación'),
@@ -363,6 +376,7 @@ class CadastralPlans(models.Model):
     uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT', help_text= "Colocar Fecha dd/mm/año")
     visado =  models.DateField(blank=True, null=True, verbose_name='Visado', help_text= "Colocar Fecha dd/mm/año")
     minute_review =  models.DateField(blank=True, null=True, verbose_name='Revisión Minuta', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
     status = models.CharField(max_length=15, choices=estados, default='Sin Tramitar', verbose_name="Estado")
     #aqui deberia ser, estadus: pendiente, revision, cancelado, rebotado, inscrito
     class Meta:
@@ -381,6 +395,7 @@ class Corrections(models.Model):
     errorReview = models.DateField(blank=True, null=True, verbose_name='Revisión de Errores', help_text= "Colocar Fecha dd/mm/año")
     corrections = models.DateField(blank=True, null=True, verbose_name='Correciones', help_text= "Colocar Fecha dd/mm/año")
     uploadedAPT = models.DateField(blank=True, null=True, verbose_name='Subido APT', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
 
     class Meta:
         verbose_name = 'Correción'
@@ -392,6 +407,14 @@ class Corrections(models.Model):
 
 #replanteo 
 class Replant(models.Model):
+    estados = [
+        ('Pendiente', 'Pendiente'),
+        ('En proceso', 'En proceso'),
+        ('Entregado', 'Entregado'),
+        ('Atrasado', 'Atrasado'),
+        ('Cancelado', 'Cancelado'),
+    ]
+
     solicitud_id= models.ForeignKey(Quotes, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name='Solicitud', related_name='solicitudReplant')
     assigned_to = models.ForeignKey(Employees, on_delete=models.DO_NOTHING, null=True, blank=False, verbose_name="Asignado a:", related_name="replant_assigned")
     armed_info = models.DateField(blank=True, null=True, verbose_name='Info. Armada', help_text= "Colocar Fecha dd/mm/año")
@@ -402,6 +425,8 @@ class Replant(models.Model):
     drafting = models.DateField(blank=True, null=True, verbose_name='Redacción del Doc.', help_text= "Colocar Fecha dd/mm/año")
     review = models.DateField(blank=True, null=True, verbose_name='Revisión', help_text= "Colocar Fecha dd/mm/año")
     submittedReport = models.DateField(blank=True, null=True, verbose_name='Reporte entregado el:', help_text= "Colocar Fecha dd/mm/año")
+    note = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Comentario' )
+    status = models.CharField(max_length=15, choices=estados, default='Sin Tramitar', verbose_name="Estado")    
 
     class Meta:
         verbose_name = 'Replanteo'
@@ -427,3 +452,6 @@ model entry tiene FK a Blog y MANY a Author
 EL MODELO ENTRY PUEDE ACCEDER A LAS PROPIEDADES
 DEL MODELO blog USANDO __, ej:
 Entry.objects.filter(blog__name='beatles)"""
+
+#inlinecss django
+#decoulple django

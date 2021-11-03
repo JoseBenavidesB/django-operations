@@ -15,7 +15,7 @@ def post_save_approve_quote(sender, update_fields, instance, created, **kwargs):
 @receiver(post_save, sender=Quotes)
 def prueba(sender, update_fields, instance, created, **kwargs):
     if created or not created:
-        if Solicitudes.objects.filter(quote=instance).count() < 1:
+        if str(instance.service.typeService) != "Aprobada":
             if str(instance.status) == 'Aprobada':
                 Solicitudes.objects.create(quote=instance)
                 Payments.objects.create(quote=instance)
@@ -37,6 +37,7 @@ def post_save_create_fieldsurvey(sender, instance, created, **kwargs):
             
         elif(str(instance.quote.service) == 'Informe'):
             Reports.objects.create(solicitud_id=instance.quote)
+            print(str(instance.quote.service))
             
         elif(str(instance.quote.service) == 'Informe--Replanteo'):
             Reports.objects.create(solicitud_id=instance.quote)

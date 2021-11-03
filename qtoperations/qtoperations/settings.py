@@ -143,7 +143,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -183,3 +183,4 @@ EMAIL_HOST_USER = 'qtopotest@gmail.com'
 EMAIL_HOST_PASSWORD = 'QtoPo2017'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

@@ -185,3 +185,7 @@ EMAIL_HOST_PASSWORD = 'QtoPo2017'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())

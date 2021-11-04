@@ -161,8 +161,8 @@ LOGIN_REDIRECT_URL = 'solicitud'
 
 
 #FOR IMAGES
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'img/')
 
 
 #for DJANGO ADMIN PANEL
@@ -183,4 +183,4 @@ EMAIL_HOST_USER = 'qtopotest@gmail.com'
 EMAIL_HOST_PASSWORD = 'QtoPo2017'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

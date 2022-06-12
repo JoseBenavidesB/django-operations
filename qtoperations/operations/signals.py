@@ -17,10 +17,11 @@ def prueba(sender, update_fields, instance, created, **kwargs):
     if created or not created:
         if str(instance.service.typeService) != "Aprobada":
             if str(instance.status) == 'Aprobada':
-                Solicitudes.objects.create(quote=instance)
-                Payments.objects.create(quote=instance)
-                Preliminary.objects.create(quote=instance)
-                FieldSurvey.objects.create(solicitud_id=instance)
+                if Solicitudes.objects.filter(quote=instance).count() <= 0:
+                    Solicitudes.objects.create(quote=instance)
+                    Payments.objects.create(quote=instance)
+                    Preliminary.objects.create(quote=instance)
+                    FieldSurvey.objects.create(solicitud_id=instance)
 
 @receiver(post_save, sender=Solicitudes) #there are two ways to use signals, the most easy is use decorator
 def post_save_create_fieldsurvey(sender, instance, created, **kwargs):

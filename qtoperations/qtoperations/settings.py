@@ -12,20 +12,31 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+<<<<<<< HEAD
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
+=======
+#BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+>>>>>>> new_branch
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+<<<<<<< HEAD
 SECRET_KEY = os.getenv('SECRET_KEY')
+=======
+SECRET_KEY = 'django-insecure-l=!%yqagff63(_(ot71b#p+ey32is6_jxab*1r*wj(48y2(iif'
+>>>>>>> new_branch
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -88,12 +99,23 @@ WSGI_APPLICATION = 'qtoperations.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'database name',
+        'USER':'database user',
+        'PASSWORD':'database password',
+        'HOST': 'database endpoint',
+        'PORT':'database port',
+    }
+}
 
 """ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')#BASE_DIR / 'db.sqlite3',
     }
+<<<<<<< HEAD
 } """
 import dj_database_url
 from decouple import config
@@ -101,6 +123,21 @@ DATABASE = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL'))
 }
+=======
+} 
+
+import dj_database_url
+from decouple import config
+""" DATABASE = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+} """
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
+>>>>>>> new_branch
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -137,7 +174,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+<<<<<<< HEAD
 
+=======
+>>>>>>> new_branch
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -184,8 +224,12 @@ EMAIL_HOST_USER = 'qtopotest@gmail.com'
 EMAIL_HOST_PASSWORD = 'QtoPo2017'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+<<<<<<< HEAD
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+=======
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+>>>>>>> new_branch

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 web: python qtoperations/manage.py runserver 0.0.0.0:$PORT
+=======
+web: gunicorn qtoperations.wsgi --log-file -
+>>>>>>> new_branch

@@ -124,7 +124,7 @@ class Quotes(models.Model):
     description = models.CharField(max_length=100, null=True, blank=False, verbose_name="Descripción", help_text="Descripción de la cotización")
     service = models.ForeignKey(Services, on_delete=models.DO_NOTHING, null=True, verbose_name='Servicio')
     plan = models.URLField(blank=True, verbose_name='Plano', max_length=200, help_text="Link del plano, por favor")
-    finca = models.CharField(max_length=100, null=True, blank=False, verbose_name="Número de Finca", help_text="Número de folio real")
+    finca = models.CharField(max_length=100, null=True, blank=True, verbose_name="Número de Finca", help_text="Número de folio real")
     area = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Área del proyecto", blank=True, null=True)
     location = models.CharField(max_length=50, verbose_name='Localización', help_text="Escriba la ubicación del lote", blank=True, null=True)
     customer = models.ForeignKey(Customers, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Cliente", related_name="quote_customer")

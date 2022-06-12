@@ -89,21 +89,34 @@ WSGI_APPLICATION = 'qtoperations.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'database name',
+        'USER':'database user',
+        'PASSWORD':'database password',
+        'HOST': 'database endpoint',
+        'PORT':'database port',
+    }
+}
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3')#BASE_DIR / 'db.sqlite3',
     }
-} """
+} 
 
 import dj_database_url
 from decouple import config
-DATABASE = {
+""" DATABASE = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
     )
-}
+} """
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -187,4 +200,4 @@ EMAIL_HOST_USER = 'qtopotest@gmail.com'
 EMAIL_HOST_PASSWORD = 'QtoPo2017'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorafe'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

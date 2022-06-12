@@ -83,8 +83,15 @@
                                     <a class="nav-link" target="_blank" href="{% url 'admin:index' %}">Admin Panel</a>
                                 </li>
                             {% endif %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sesión
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'reset_password' %}">Cambiar Contraseña</a>
+                                </div>
                             </li>
                         </ul> 
                     </nav>
